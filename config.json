@@ -1,0 +1,50 @@
+{
+  "bot": {
+    "status": {
+      "idle": "🚕|AVAILABLE|🚕",
+      "busy": "🔴|BUSY|🔴"
+    },
+    "party": {
+      "maxSize": 4
+    },
+    "features": {
+      "fortStatsHigh": true,
+      "denyFriendRequests": false
+    },
+    "auth": {
+      "fnbrClient": "fortniteAndroidGameClient",
+      "authorizationCodeClient": {
+        "name": "fortnitePCGameClient",
+        "clientId": "ec684b8c687f479fadea3cb2ad83f5c6",
+        "clientSecret": "e1f31c211f28413186262d37a13fc84d",
+        "basicToken": "ZWM2ODRiOGM2ODdmNDc5ZmFkZWEzY2IyYWQ4M2Y1YzY6ZTFmMzFjMjExZjI4NDEzMTg2MjYyZDM3YTEzZmM4NGQ="
+      },
+      "deviceAuthClient": {
+        "name": "fortniteAndroidGameClient",
+        "clientId": "3f69e56c7649492c8cc29f1af08a8a12",
+        "clientSecret": "b51ee9cb12234f50a69efa67ef53812e",
+        "basicToken": "M2Y2OWU1NmM3NjQ5NDkyYzhjYzI5ZjFhZjA4YThhMTI6YjUxZWU5Y2IxMjIzNGY1MGE2OWVmYTY3ZWY1MzgxMmU="
+      }
+    },
+    "timings": {
+      "initTimeoutMs": 10000,
+      "postAcceptDelayMs": 300,
+      "partyAutoLeaveMs": 90000,
+      "reloadDelayMs": 150,
+      "matchstateLeaveDelayMs": 500,
+      "reconnectDelayMs": 200,
+      "requestTimeoutMs": 15000
+    },
+    "reconnect": {
+      "maxRetries": 3,
+      "restRetryLimit": 3,
+      "xmppMaxConnectionRetries": 3
+    }
+  },
+  "dashboard": {
+    "port": 3000,
+    "host": "0.0.0.0",
+    "title": "BluGo Dashboard"
+  },
+  "dataFile": "./data/accounts.json"
+}

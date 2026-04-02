@@ -1,0 +1,17 @@
+{
+  "name": "blugo-stw",
+  "version": "1.0.0",
+  "description": "Bot taxi para Fortnite STW con dashboard web en tiempo real",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "fnbr": "^4.1.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
