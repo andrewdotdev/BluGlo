@@ -1,796 +1,808 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BluGo — Dashboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" />
-  <style>
-    /* Reset and variables */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --bg: #0a0a0b;
-      --bg2: #111113;
-      --bg3: #18181c;
-      --border: #232328;
-      --border2: #2e2e36;
-      --text: #e2e2e8;
-      --muted: #5a5a6e;
-      --accent: #f5c518;
-      --green: #39d353;
-      --red: #f85149;
-      --orange: #e3993e;
-      --blue: #58a6ff;
-      --purple: #bc8cff;
-      --mono: 'IBM Plex Mono', monospace;
-      --sans: 'IBM Plex Sans', sans-serif;
-      --radius: 4px;
-      --gutter: 20px;
-    }
-
-    html,
-    body {
-      height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--mono);
-      font-size: 13px;
-      line-height: 1.5;
-      overflow: hidden;
-    }
-
-    /* Main layout */
-    #app {
-      display: grid;
-      grid-template-rows: 48px 1fr;
-      grid-template-columns: 280px 1fr 300px;
-      height: 100vh;
-      gap: 0;
-    }
-
-    /* Header */
-    header {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 0 20px;
-      background: var(--bg2);
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-
-    .logo {
-      font-weight: 600;
-      font-size: 14px;
-      letter-spacing: 0.08em;
-      color: var(--accent);
-    }
-
-    .logo span {
-      color: var(--muted);
-      font-weight: 300;
-    }
-
-    .header-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--bg3);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 3px 10px;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .header-pill .dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-
-      0%,
-      100% {
-        opacity: 1;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BluGo — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap"
+    />
+    <style>
+      /* Reset and variables */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
-      50% {
+      :root {
+        --bg: #0a0a0b;
+        --bg2: #111113;
+        --bg3: #18181c;
+        --border: #232328;
+        --border2: #2e2e36;
+        --text: #e2e2e8;
+        --muted: #5a5a6e;
+        --accent: #f5c518;
+        --green: #39d353;
+        --red: #f85149;
+        --orange: #e3993e;
+        --blue: #58a6ff;
+        --purple: #bc8cff;
+        --mono: "IBM Plex Mono", monospace;
+        --sans: "IBM Plex Sans", sans-serif;
+        --radius: 4px;
+        --gutter: 20px;
+      }
+
+      html,
+      body {
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--mono);
+        font-size: 13px;
+        line-height: 1.5;
+        overflow: hidden;
+      }
+
+      /* Main layout */
+      #app {
+        display: grid;
+        grid-template-rows: 48px 1fr;
+        grid-template-columns: 280px 1fr 300px;
+        height: 100vh;
+        gap: 0;
+      }
+
+      /* Header */
+      header {
+        grid-column: 1 / -1;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 0 20px;
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        position: relative;
+      }
+
+      .logo {
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+      }
+
+      .logo span {
+        color: var(--muted);
+        font-weight: 300;
+      }
+
+      .header-pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 3px 10px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .header-pill .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green);
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .header-time {
+        margin-left: auto;
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 0.05em;
+      }
+
+      /* Left panel: bot list */
+      #bots-panel {
+        background: var(--bg2);
+        border-right: 1px solid var(--border);
+        overflow-y: auto;
+        padding: 12px 0;
+      }
+
+      .panel-label {
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        color: var(--muted);
+        padding: 0 16px 8px;
+        text-transform: uppercase;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 8px;
+      }
+
+      .bot-card {
+        padding: 10px 16px;
+        cursor: pointer;
+        border-left: 3px solid transparent;
+        transition:
+          background 0.1s,
+          border-color 0.1s;
+        position: relative;
+      }
+
+      .bot-card:hover {
+        background: var(--bg3);
+      }
+
+      .bot-card.selected {
+        background: var(--bg3);
+        border-left-color: var(--accent);
+      }
+
+      .bot-card-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        letter-spacing: 0.02em;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .bot-card-subid {
+        margin-top: 3px;
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+      }
+
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      .dot-active {
+        background: var(--green);
+        box-shadow: 0 0 6px var(--green);
+      }
+
+      .dot-busy {
+        background: var(--orange);
+        box-shadow: 0 0 6px var(--orange);
+        animation: pulse 1.5s infinite;
+      }
+
+      .dot-offline {
+        background: var(--red);
+      }
+
+      .dot-loading {
+        background: var(--blue);
+        animation: pulse 0.8s infinite;
+      }
+
+      .bot-card-status {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .bot-card-stats {
+        display: flex;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .bot-stat {
+        font-size: 10px;
+        color: var(--muted);
+      }
+
+      .bot-stat strong {
+        color: var(--accent);
+        font-weight: 500;
+      }
+
+      .empty-bots {
+        padding: 24px 16px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .empty-bots code {
+        color: var(--accent);
+        background: var(--bg3);
+        padding: 1px 4px;
+        border-radius: 3px;
+      }
+
+      /* Center panel: selected bot details */
+      #detail-panel {
+        background: var(--bg);
+        overflow-y: auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .detail-empty {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted);
+        gap: 12px;
+      }
+
+      .detail-empty .taxi-icon {
+        font-size: 48px;
         opacity: 0.3;
       }
-    }
 
-    .header-time {
-      margin-left: auto;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-    }
-
-    /* Left panel: bot list */
-    #bots-panel {
-      background: var(--bg2);
-      border-right: 1px solid var(--border);
-      overflow-y: auto;
-      padding: 12px 0;
-    }
-
-    .panel-label {
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      padding: 0 16px 8px;
-      text-transform: uppercase;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 8px;
-    }
-
-    .bot-card {
-      padding: 10px 16px;
-      cursor: pointer;
-      border-left: 3px solid transparent;
-      transition: background 0.1s, border-color 0.1s;
-      position: relative;
-    }
-
-    .bot-card:hover {
-      background: var(--bg3);
-    }
-
-    .bot-card.selected {
-      background: var(--bg3);
-      border-left-color: var(--accent);
-    }
-
-    .bot-card-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: 0.02em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .bot-card-subid {
-      margin-top: 3px;
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .dot-active {
-      background: var(--green);
-      box-shadow: 0 0 6px var(--green);
-    }
-
-    .dot-busy {
-      background: var(--orange);
-      box-shadow: 0 0 6px var(--orange);
-      animation: pulse 1.5s infinite;
-    }
-
-    .dot-offline {
-      background: var(--red);
-    }
-
-    .dot-loading {
-      background: var(--blue);
-      animation: pulse 0.8s infinite;
-    }
-
-    .bot-card-status {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 3px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .bot-card-stats {
-      display: flex;
-      gap: 10px;
-      margin-top: 6px;
-    }
-
-    .bot-stat {
-      font-size: 10px;
-      color: var(--muted);
-    }
-
-    .bot-stat strong {
-      color: var(--accent);
-      font-weight: 500;
-    }
-
-    .empty-bots {
-      padding: 24px 16px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.8;
-    }
-
-    .empty-bots code {
-      color: var(--accent);
-      background: var(--bg3);
-      padding: 1px 4px;
-      border-radius: 3px;
-    }
-
-    /* Center panel: selected bot details */
-    #detail-panel {
-      background: var(--bg);
-      overflow-y: auto;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .detail-empty {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      gap: 12px;
-    }
-
-    .detail-empty .taxi-icon {
-      font-size: 48px;
-      opacity: 0.3;
-    }
-
-    .section-title {
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    .detail-header {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-    }
-
-    .detail-display-name {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text);
-      letter-spacing: 0.02em;
-      word-break: break-word;
-    }
-
-    .detail-account-id {
-      margin-top: 4px;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-      word-break: break-all;
-    }
-
-    .presence-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-weight: 500;
-      margin-top: 6px;
-    }
-
-    .badge-active {
-      background: rgba(57, 211, 83, 0.12);
-      color: var(--green);
-      border: 1px solid rgba(57, 211, 83, 0.3);
-    }
-
-    .badge-busy {
-      background: rgba(227, 153, 62, 0.12);
-      color: var(--orange);
-      border: 1px solid rgba(227, 153, 62, 0.3);
-    }
-
-    .badge-offline {
-      background: rgba(248, 81, 73, 0.12);
-      color: var(--red);
-      border: 1px solid rgba(248, 81, 73, 0.3);
-    }
-
-    .badge-loading {
-      background: rgba(88, 166, 255, 0.12);
-      color: var(--blue);
-      border: 1px solid rgba(88, 166, 255, 0.3);
-    }
-
-    /* Stats grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 10px;
-    }
-
-    .stat-box {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px 14px;
-    }
-
-    .stat-box-label {
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-
-    .stat-box-value {
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    .stat-box-unit {
-      font-size: 11px;
-      color: var(--muted);
-      margin-left: 3px;
-    }
-
-    /* Config table */
-    .config-table {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      width: 100%;
-    }
-
-    .config-row {
-      display: flex;
-      padding: 8px 14px;
-      border-bottom: 1px solid var(--border);
-      font-size: 12px;
-    }
-
-    .config-row:last-child {
-      border-bottom: none;
-    }
-
-    .config-key {
-      color: var(--muted);
-      width: 180px;
-      flex-shrink: 0;
-    }
-
-    .config-val {
-      color: var(--text);
-      flex: 1;
-    }
-
-    .config-val.true {
-      color: var(--green);
-    }
-
-    .config-val.false {
-      color: var(--red);
-    }
-
-    /* ─── Panel derecho: log ─────────────────────────────────────────────────── */
-    #log-panel {
-      background: var(--bg2);
-      border-left: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    #log-panel .panel-label {
-      border-bottom: 1px solid var(--border);
-      padding: 12px 14px 10px;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .log-clear {
-      background: none;
-      border: 1px solid var(--border2);
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 10px;
-      cursor: pointer;
-      padding: 2px 8px;
-      border-radius: 3px;
-      transition: color 0.15s, border-color 0.15s;
-    }
-
-    .log-clear:hover {
-      color: var(--text);
-      border-color: var(--muted);
-    }
-
-    #log-stream {
-      flex: 1;
-      overflow-y: auto;
-      padding: 10px 0;
-      font-size: 11px;
-      line-height: 1.7;
-    }
-
-    .log-entry {
-      display: flex;
-      gap: 8px;
-      padding: 2px 14px;
-      animation: fadeIn 0.15s ease;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateX(4px);
+      .section-title {
+        font-size: 10px;
+        letter-spacing: 0.15em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
 
-      to {
-        opacity: 1;
-      }
-    }
-
-    .log-ts {
-      color: var(--muted);
-      flex-shrink: 0;
-      font-size: 10px;
-    }
-
-    .log-id {
-      color: var(--purple);
-      flex-shrink: 0;
-      min-width: 70px;
-    }
-
-    .log-msg {
-      color: var(--text);
-      flex: 1;
-      word-break: break-word;
-    }
-
-    .log-info .log-msg {
-      color: var(--text);
-    }
-
-    .log-ok .log-msg {
-      color: var(--green);
-    }
-
-    .log-warn .log-msg {
-      color: var(--orange);
-    }
-
-    .log-error .log-msg {
-      color: var(--red);
-    }
-
-    /* ─── Scrollbars ─────────────────────────────────────────────────────────── */
-    ::-webkit-scrollbar {
-      width: 4px;
-      height: 4px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: var(--border2);
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: var(--muted);
-    }
-
-    /* Minimal responsive rules */
-    @media (max-width: 900px) {
-      #app {
-        grid-template-columns: 220px 1fr;
-        grid-template-rows: 48px 1fr;
+      .section-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
       }
 
-      #log-panel {
-        display: none;
-      }
-    }
-
-    @media (max-width: 600px) {
-      #app {
-        grid-template-columns: 1fr;
-        grid-template-rows: 48px 200px 1fr;
+      .detail-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
       }
 
-      #bots-panel {
-        border-right: none;
+      .detail-display-name {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text);
+        letter-spacing: 0.02em;
+        word-break: break-word;
+      }
+
+      .detail-account-id {
+        margin-top: 4px;
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+        word-break: break-all;
+      }
+
+      .presence-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-weight: 500;
+        margin-top: 6px;
+      }
+
+      .badge-active {
+        background: rgba(57, 211, 83, 0.12);
+        color: var(--green);
+        border: 1px solid rgba(57, 211, 83, 0.3);
+      }
+
+      .badge-busy {
+        background: rgba(227, 153, 62, 0.12);
+        color: var(--orange);
+        border: 1px solid rgba(227, 153, 62, 0.3);
+      }
+
+      .badge-offline {
+        background: rgba(248, 81, 73, 0.12);
+        color: var(--red);
+        border: 1px solid rgba(248, 81, 73, 0.3);
+      }
+
+      .badge-loading {
+        background: rgba(88, 166, 255, 0.12);
+        color: var(--blue);
+        border: 1px solid rgba(88, 166, 255, 0.3);
+      }
+
+      /* Stats grid */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 10px;
+      }
+
+      .stat-box {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 12px 14px;
+      }
+
+      .stat-box-label {
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+
+      .stat-box-value {
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--accent);
+      }
+
+      .stat-box-unit {
+        font-size: 11px;
+        color: var(--muted);
+        margin-left: 3px;
+      }
+
+      /* Config table */
+      .config-table {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        width: 100%;
+      }
+
+      .config-row {
+        display: flex;
+        padding: 8px 14px;
         border-bottom: 1px solid var(--border);
+        font-size: 12px;
       }
-    }
-  </style>
-</head>
 
-<body>
+      .config-row:last-child {
+        border-bottom: none;
+      }
 
-  <div id="app">
+      .config-key {
+        color: var(--muted);
+        width: 180px;
+        flex-shrink: 0;
+      }
 
-    <!-- Header -->
-    <header>
-      <div class="logo">TAXI<span>BOT</span> STW</div>
-      <div class="header-pill">
-        <div class="dot" id="conn-dot"></div>
-        <span id="conn-label">Conectando...</span>
-      </div>
-      <div class="header-pill" id="bots-count-pill">
-        <span id="bots-count">0</span>&nbsp;bots
-      </div>
-      <div class="header-time" id="clock"></div>
-    </header>
+      .config-val {
+        color: var(--text);
+        flex: 1;
+      }
 
-    <!-- Panel izquierdo: lista de bots -->
-    <aside id="bots-panel">
-      <div class="panel-label">Bots</div>
-      <div id="bots-list">
-        <div class="empty-bots">
-          Sin bots.<br />
-          Usa <code>/add</code> en la consola<br />
-          to add an account.
+      .config-val.true {
+        color: var(--green);
+      }
+
+      .config-val.false {
+        color: var(--red);
+      }
+
+      /* Right panel: log */
+      #log-panel {
+        background: var(--bg2);
+        border-left: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #log-panel .panel-label {
+        border-bottom: 1px solid var(--border);
+        padding: 12px 14px 10px;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .log-clear {
+        background: none;
+        border: 1px solid var(--border2);
+        color: var(--muted);
+        font-family: var(--mono);
+        font-size: 10px;
+        cursor: pointer;
+        padding: 2px 8px;
+        border-radius: 3px;
+        transition:
+          color 0.15s,
+          border-color 0.15s;
+      }
+
+      .log-clear:hover {
+        color: var(--text);
+        border-color: var(--muted);
+      }
+
+      #log-stream {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px 0;
+        font-size: 11px;
+        line-height: 1.7;
+      }
+
+      .log-entry {
+        display: flex;
+        gap: 8px;
+        padding: 2px 14px;
+        animation: fadeIn 0.15s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateX(4px);
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      .log-ts {
+        color: var(--muted);
+        flex-shrink: 0;
+        font-size: 10px;
+      }
+
+      .log-id {
+        color: var(--purple);
+        flex-shrink: 0;
+        min-width: 70px;
+      }
+
+      .log-msg {
+        color: var(--text);
+        flex: 1;
+        word-break: break-word;
+      }
+
+      .log-info .log-msg {
+        color: var(--text);
+      }
+
+      .log-ok .log-msg {
+        color: var(--green);
+      }
+
+      .log-warn .log-msg {
+        color: var(--orange);
+      }
+
+      .log-error .log-msg {
+        color: var(--red);
+      }
+
+      /* Scrollbars */
+      ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--border2);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--muted);
+      }
+
+      /* Minimal responsive rules */
+      @media (max-width: 900px) {
+        #app {
+          grid-template-columns: 220px 1fr;
+          grid-template-rows: 48px 1fr;
+        }
+
+        #log-panel {
+          display: none;
+        }
+      }
+
+      @media (max-width: 600px) {
+        #app {
+          grid-template-columns: 1fr;
+          grid-template-rows: 48px 200px 1fr;
+        }
+
+        #bots-panel {
+          border-right: none;
+          border-bottom: 1px solid var(--border);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <header>
+        <div class="logo">BLU<span>GO</span> TAXIES</div>
+        <div class="header-pill">
+          <div class="dot" id="conn-dot"></div>
+          <span id="conn-label">Connecting...</span>
         </div>
-      </div>
-    </aside>
+        <div class="header-pill" id="bots-count-pill">
+          <span id="bots-count">0</span>&nbsp;bots
+        </div>
+        <div class="header-time" id="clock"></div>
+      </header>
 
-    <!-- Panel central: detalle -->
-    <main id="detail-panel">
-      <div class="detail-empty">
-        <div class="taxi-icon">🚕</div>
-        <div>Select a bot</div>
-      </div>
-    </main>
+      <aside id="bots-panel">
+        <div class="panel-label">Bots</div>
+        <div id="bots-list">
+          <div class="empty-bots">
+            No bots yet.<br />
+            Use <code>/add</code> in the console<br />
+            to add an account.
+          </div>
+        </div>
+      </aside>
 
-    <!-- Panel derecho: log -->
-    <aside id="log-panel">
-      <div class="panel-label">
-        <span>Log</span>
-        <button class="log-clear" onclick="clearLog()">Clear</button>
-      </div>
-      <div id="log-stream"></div>
-    </aside>
+      <main id="detail-panel">
+        <div class="detail-empty">
+          <div class="taxi-icon">🚕</div>
+          <div>Select a bot</div>
+        </div>
+      </main>
 
-  </div>
+      <aside id="log-panel">
+        <div class="panel-label">
+          <span>Log</span>
+          <button class="log-clear" onclick="clearLog()">Clear</button>
+        </div>
+        <div id="log-stream"></div>
+      </aside>
+    </div>
 
-  <script>
-    /* ─── Status ─────────────────────────────────────────────────────────────── */
-    const bots = new Map()   // accountId → snapshot
-    let selected = null
-    const MAX_LOGS = 300
+    <script>
+      /* ─── Status ─────────────────────────────────────────────────────────────── */
+      const bots = new Map(); // accountId → snapshot
+      let selected = null;
+      const MAX_LOGS = 300;
 
-    /* ─── Reloj ──────────────────────────────────────────────────────────────── */
-    const clockEl = document.getElementById('clock')
-    setInterval(() => {
-      clockEl.textContent = new Date().toLocaleTimeString('en-GB', { hour12: false })
-    }, 1000)
+      /* ─── Clock ──────────────────────────────────────────────────────────────── */
+      const clockEl = document.getElementById("clock");
+      setInterval(() => {
+        clockEl.textContent = new Date().toLocaleTimeString("en-GB", {
+          hour12: false,
+        });
+      }, 1000);
 
-    /* ─── SSE ─────────────────────────────────────────────────────────────────── */
-    let es
+      /* ─── SSE ─────────────────────────────────────────────────────────────────── */
+      let es;
 
-    function connect() {
-      es = new EventSource('/events')
+      function connect() {
+        es = new EventSource("/events");
 
-      es.addEventListener('snapshot', (e) => {
-        const data = JSON.parse(e.data)
-        bots.clear()
-        data.forEach((b) => bots.set(b.accountId, b))
-        renderBotList()
-        if (selected) renderDetail(selected)
-        setConnected(true)
-      })
+        es.addEventListener("snapshot", (e) => {
+          const data = JSON.parse(e.data);
+          bots.clear();
+          data.forEach((b) => bots.set(b.accountId, b));
+          renderBotList();
+          if (selected) renderDetail(selected);
+          setConnected(true);
+        });
 
-      es.addEventListener('status', (e) => {
-        const { accountId, presence, status } = JSON.parse(e.data)
-        const bot = bots.get(accountId) ?? { accountId }
-        bot.presence = presence
-        bot.status = status
-        bots.set(accountId, bot)
-        updateBotCard(accountId)
-        if (selected === accountId) renderDetail(accountId)
-      })
+        es.addEventListener("status", (e) => {
+          const { accountId, presence, status } = JSON.parse(e.data);
+          const bot = bots.get(accountId) ?? { accountId };
+          bot.presence = presence;
+          bot.status = status;
+          bots.set(accountId, bot);
+          updateBotCard(accountId);
+          if (selected === accountId) renderDetail(accountId);
+        });
 
-      es.addEventListener('profile', (e) => {
-        const { accountId, displayName } = JSON.parse(e.data)
-        const bot = bots.get(accountId) ?? { accountId }
-        bot.displayName = displayName
-        bots.set(accountId, bot)
-        updateBotCard(accountId)
-        if (selected === accountId) renderDetail(accountId)
-      })
+        es.addEventListener("profile", (e) => {
+          const { accountId, displayName } = JSON.parse(e.data);
+          const bot = bots.get(accountId) ?? { accountId };
+          bot.displayName = displayName;
+          bots.set(accountId, bot);
+          updateBotCard(accountId);
+          if (selected === accountId) renderDetail(accountId);
+        });
 
-      es.addEventListener('log', (e) => {
-        appendLog(JSON.parse(e.data))
-      })
+        es.addEventListener("log", (e) => {
+          appendLog(JSON.parse(e.data));
+        });
 
-      es.addEventListener('joined', (e) => {
-        const { accountId, members } = JSON.parse(e.data)
-        const bot = bots.get(accountId)
-        if (bot) { bot.currentMembers = members; bots.set(accountId, bot) }
-        if (selected === accountId) renderDetail(accountId)
-      })
+        es.addEventListener("joined", (e) => {
+          const { accountId, members } = JSON.parse(e.data);
+          const bot = bots.get(accountId);
+          if (bot) {
+            bot.currentMembers = members;
+            bots.set(accountId, bot);
+          }
+          if (selected === accountId) renderDetail(accountId);
+        });
 
-      es.addEventListener('removed', (e) => {
-        const { accountId } = JSON.parse(e.data)
-        bots.delete(accountId)
-        if (selected === accountId) {
-          selected = null
-          showEmpty()
-        }
-        renderBotList()
-      })
+        es.addEventListener("removed", (e) => {
+          const { accountId } = JSON.parse(e.data);
+          bots.delete(accountId);
+          if (selected === accountId) {
+            selected = null;
+            showEmpty();
+          }
+          renderBotList();
+        });
 
-      es.addEventListener('friend', (e) => {
-        const { accountId } = JSON.parse(e.data)
-        const bot = bots.get(accountId)
-        if (bot) {
-          bot.stats = bot.stats ?? {}
-          bots.set(accountId, bot)
-        }
-      })
+        es.addEventListener("friend", (e) => {
+          const { accountId } = JSON.parse(e.data);
+          const bot = bots.get(accountId);
+          if (bot) {
+            bot.stats = bot.stats ?? {};
+            bots.set(accountId, bot);
+          }
+        });
 
-      // Refresh stats periodically
-      es.addEventListener('snapshot', () => { })
+        // Refresh stats periodically
+        es.addEventListener("snapshot", () => {});
 
-      es.onerror = () => {
-        setConnected(false)
-        es.close()
-        setTimeout(connect, 3000)
+        es.onerror = () => {
+          setConnected(false);
+          es.close();
+          setTimeout(connect, 3000);
+        };
       }
-    }
 
-    function setConnected(ok) {
-      document.getElementById('conn-dot').style.background = ok ? 'var(--green)' : 'var(--red)'
-      document.getElementById('conn-label').textContent = ok ? 'Connected' : 'Reconnecting...'
-    }
+      function setConnected(ok) {
+        document.getElementById("conn-dot").style.background = ok
+          ? "var(--green)"
+          : "var(--red)";
+        document.getElementById("conn-label").textContent = ok
+          ? "Connected"
+          : "Reconnecting...";
+      }
 
-    connect()
+      connect();
 
-    // Periodic uptime refresh in details
-    setInterval(() => {
-      if (selected) renderDetail(selected)
-      document.getElementById('bots-count').textContent = bots.size
-    }, 2000)
+      // Periodic uptime refresh in details
+      setInterval(() => {
+        if (selected) renderDetail(selected);
+        document.getElementById("bots-count").textContent = bots.size;
+      }, 2000);
 
-    /* ─── Render: lista de bots ────────────────────────────────────────────────── */
-    function renderBotList() {
-      document.getElementById('bots-count').textContent = bots.size
-      const container = document.getElementById('bots-list')
+      /* ─── Render: bot list ────────────────────────────────────────────────────── */
+      function renderBotList() {
+        document.getElementById("bots-count").textContent = bots.size;
+        const container = document.getElementById("bots-list");
 
-      if (bots.size === 0) {
-        container.innerHTML = `<div class="empty-bots">
+        if (bots.size === 0) {
+          container.innerHTML = `<div class="empty-bots">
       No bots yet.<br/>Use <code>/add</code> in the console.
-    </div>`
-        return
+    </div>`;
+          return;
+        }
+
+        container.innerHTML = "";
+        for (const [id, bot] of bots) {
+          const card = makeBotCard(id, bot);
+          container.appendChild(card);
+        }
       }
 
-      container.innerHTML = ''
-      for (const [id, bot] of bots) {
-        const card = makeBotCard(id, bot)
-        container.appendChild(card)
-      }
-    }
+      function makeBotCard(accountId, bot) {
+        const el = document.createElement("div");
+        el.className = `bot-card${selected === accountId ? " selected" : ""}`;
+        el.id = `card-${accountId}`;
+        el.onclick = () => selectBot(accountId);
 
-    function makeBotCard(accountId, bot) {
-      const el = document.createElement('div')
-      el.className = `bot-card${selected === accountId ? ' selected' : ''}`
-      el.id = `card-${accountId}`
-      el.onclick = () => selectBot(accountId)
+        const dotClass = presenceToDotClass(bot.presence);
+        const displayName = bot.displayName || `${accountId.slice(0, 8)}...`;
 
-      const dotClass = presenceToDotClass(bot.presence)
-      const taxis = bot.stats?.taxisCompleted ?? 0
-
-      const displayName = bot.displayName || `${accountId.slice(0, 8)}...`
-
-      el.innerHTML = `
+        el.innerHTML = `
     <div class="bot-card-title">
       <div class="status-dot ${dotClass}"></div>
       ${esc(displayName)}
     </div>
     <div class="bot-card-subid">${esc(accountId)}</div>
-    <div class="bot-card-status">${esc(bot.status ?? '—')}</div>
-    <!-- <div class="bot-card-stats"> -->
-    <!--  <span class="bot-stat">Taxies <strong>${taxis}</strong></span> -->
-    <!--  <span class="bot-stat">Retries <strong>${bot.retryCount ?? 0}</strong></span> -->
-    <!-- </div> -->
-  `
-      return el
-    }
-
-    function updateBotCard(accountId) {
-      const bot = bots.get(accountId)
-      if (!bot) return
-      const existing = document.getElementById(`card-${accountId}`)
-      if (existing) {
-        const newCard = makeBotCard(accountId, bot)
-        existing.replaceWith(newCard)
-      } else {
-        renderBotList()
+    <div class="bot-card-status">${esc(bot.status ?? "—")}</div>
+  `;
+        return el;
       }
-    }
 
-    /* ─── Render: detalle ─────────────────────────────────────────────────────── */
-    function selectBot(accountId) {
-      selected = accountId
+      function updateBotCard(accountId) {
+        const bot = bots.get(accountId);
+        if (!bot) return;
+        const existing = document.getElementById(`card-${accountId}`);
+        if (existing) {
+          const newCard = makeBotCard(accountId, bot);
+          existing.replaceWith(newCard);
+        } else {
+          renderBotList();
+        }
+      }
 
-      // Update visual selection
-      document.querySelectorAll('.bot-card').forEach((c) => c.classList.remove('selected'))
-      document.getElementById(`card-${accountId}`)?.classList.add('selected')
+      /* ─── Render: detail ─────────────────────────────────────────────────────── */
+      function selectBot(accountId) {
+        selected = accountId;
 
-      renderDetail(accountId)
-    }
+        // Update visual selection
+        document
+          .querySelectorAll(".bot-card")
+          .forEach((c) => c.classList.remove("selected"));
+        document.getElementById(`card-${accountId}`)?.classList.add("selected");
 
-    function renderDetail(accountId) {
-      const bot = bots.get(accountId)
-      if (!bot) return
+        renderDetail(accountId);
+      }
 
-      const panel = document.getElementById('detail-panel')
-      const presenceLabel = { active: 'Active', busy: 'Busy', offline: 'Offline', loading: 'Loading' }
-      const badgeClass = { active: 'badge-active', busy: 'badge-busy', offline: 'badge-offline', loading: 'badge-loading' }
+      function renderDetail(accountId) {
+        const bot = bots.get(accountId);
+        if (!bot) return;
 
-      const uptime = bot.stats?.connectedAt
-        ? Math.floor((Date.now() - bot.stats.connectedAt) / 1000)
-        : 0
-      const uptimeStr = uptime > 0 ? formatDuration(uptime) : '—'
+        const panel = document.getElementById("detail-panel");
+        const presenceLabel = {
+          active: "Active",
+          busy: "Busy",
+          offline: "Offline",
+          loading: "Loading",
+        };
+        const badgeClass = {
+          active: "badge-active",
+          busy: "badge-busy",
+          offline: "badge-offline",
+          loading: "badge-loading",
+        };
 
-      const actions = bot.actions ?? {}
-      const displayName = bot.displayName || 'Unknown account'
+        const uptime = bot.stats?.connectedAt
+          ? Math.floor((Date.now() - bot.stats.connectedAt) / 1000)
+          : 0;
+        const uptimeStr = uptime > 0 ? formatDuration(uptime) : "—";
 
-      panel.innerHTML = `
+        const actions = bot.actions ?? {};
+        const displayName = bot.displayName || "Unknown account";
+
+        panel.innerHTML = `
     <div class="section-title">Account</div>
     <div class="detail-header">
       <div>
         <div class="detail-display-name">${esc(displayName)}</div>
         <div class="detail-account-id">${esc(accountId)}</div>
-        <div class="presence-badge ${badgeClass[bot.presence] ?? 'badge-offline'}">
-          ${presenceLabel[bot.presence] ?? bot.presence} — ${esc(bot.status ?? '')}
+        <div class="presence-badge ${badgeClass[bot.presence] ?? "badge-offline"}">
+          ${presenceLabel[bot.presence] ?? bot.presence} — ${esc(bot.status ?? "")}
         </div>
       </div>
     </div>
@@ -798,7 +810,7 @@
     <div class="section-title">Statistics</div>
     <div class="stats-grid">
       <div class="stat-box">
-        <div class="stat-box-label">Taxis</div>
+        <div class="stat-box-label">Taxies</div>
         <div class="stat-box-value">${bot.stats?.taxisCompleted ?? 0}</div>
       </div>
       <div class="stat-box">
@@ -819,82 +831,92 @@
     <div class="config-table">
       <div class="config-row">
         <span class="config-key">Idle status</span>
-        <span class="config-val">${esc(actions.idleStatus ?? '—')}</span>
+        <span class="config-val">${esc(actions.idleStatus ?? "—")}</span>
       </div>
       <div class="config-row">
         <span class="config-key">Busy status</span>
-        <span class="config-val">${esc(actions.busyStatus ?? '—')}</span>
+        <span class="config-val">${esc(actions.busyStatus ?? "—")}</span>
       </div>
       <div class="config-row">
         <span class="config-key">High FORT stats</span>
-        <span class="config-val ${actions.high}">${actions.high ? 'Yes (92765)' : 'No (0)'}</span>
+        <span class="config-val ${actions.high}">${actions.high ? "Yes (92765)" : "No (0)"}</span>
       </div>
       <div class="config-row">
         <span class="config-key">Decline friend requests</span>
-        <span class="config-val ${actions.denyFriendRequests}">${actions.denyFriendRequests ? 'Yes' : 'No'}</span>
+        <span class="config-val ${actions.denyFriendRequests}">${actions.denyFriendRequests ? "Yes" : "No"}</span>
       </div>
     </div>
-  `
-    }
+  `;
+      }
 
-    function showEmpty() {
-      document.getElementById('detail-panel').innerHTML = `
+      function showEmpty() {
+        document.getElementById("detail-panel").innerHTML = `
     <div class="detail-empty">
       <div class="taxi-icon">🚕</div>
       <div>Select a bot</div>
     </div>
-  `
-    }
+  `;
+      }
 
-    /* ─── Log ─────────────────────────────────────────────────────────────────── */
-    function appendLog(entry) {
-      const stream = document.getElementById('log-stream')
-      const el = document.createElement('div')
-      el.className = `log-entry log-${entry.level ?? 'info'}`
+      /* ─── Log ─────────────────────────────────────────────────────────────────── */
+      function appendLog(entry) {
+        const stream = document.getElementById("log-stream");
+        const el = document.createElement("div");
+        el.className = `log-entry log-${entry.level ?? "info"}`;
 
-      const ts = new Date(entry.ts).toLocaleTimeString('es', { hour12: false })
-      const shortId = entry.accountId ? entry.accountId.slice(0, 8) : 'system '
+        const ts = new Date(entry.ts).toLocaleTimeString("en-GB", {
+          hour12: false,
+        });
+        const shortId = entry.accountId
+          ? entry.accountId.slice(0, 8)
+          : "system ";
 
-      el.innerHTML = `
+        el.innerHTML = `
     <span class="log-ts">${ts}</span>
     <span class="log-id">${shortId}</span>
     <span class="log-msg">${esc(entry.message)}</span>
-  `
+  `;
 
-      const atBottom = stream.scrollHeight - stream.scrollTop <= stream.clientHeight + 40
-      stream.appendChild(el)
+        const atBottom =
+          stream.scrollHeight - stream.scrollTop <= stream.clientHeight + 40;
+        stream.appendChild(el);
 
-      // Limit the number of entries
-      while (stream.children.length > MAX_LOGS) {
-        stream.removeChild(stream.firstChild)
+        while (stream.children.length > MAX_LOGS) {
+          stream.removeChild(stream.firstChild);
+        }
+
+        if (atBottom) stream.scrollTop = stream.scrollHeight;
       }
 
-      if (atBottom) stream.scrollTop = stream.scrollHeight
-    }
+      function clearLog() {
+        document.getElementById("log-stream").innerHTML = "";
+      }
 
-    function clearLog() {
-      document.getElementById('log-stream').innerHTML = ''
-    }
+      /* ─── Helpers ─────────────────────────────────────────────────────────────── */
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
 
-    /* ─── Helpers ─────────────────────────────────────────────────────────────── */
-    function esc(s) {
-      return String(s)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-    }
+      function presenceToDotClass(p) {
+        return (
+          {
+            active: "dot-active",
+            busy: "dot-busy",
+            offline: "dot-offline",
+            loading: "dot-loading",
+          }[p] ?? "dot-offline"
+        );
+      }
 
-    function presenceToDotClass(p) {
-      return { active: 'dot-active', busy: 'dot-busy', offline: 'dot-offline', loading: 'dot-loading' }[p] ?? 'dot-offline'
-    }
-
-    function formatDuration(s) {
-      if (s < 60) return `${s}s`
-      if (s < 3600) return `${Math.floor(s / 60)}m ${s % 60}s`
-      return `${Math.floor(s / 3600)}h ${Math.floor((s % 3600) / 60)}m`
-    }
-  </script>
-</body>
-
+      function formatDuration(s) {
+        if (s < 60) return `${s}s`;
+        if (s < 3600) return `${Math.floor(s / 60)}m ${s % 60}s`;
+        return `${Math.floor(s / 3600)}h ${Math.floor((s % 3600) / 60)}m`;
+      }
+    </script>
+  </body>
 </html>

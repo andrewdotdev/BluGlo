@@ -15,28 +15,30 @@ npm start
 ```
 
 This starts:
+
 - Dashboard: `http://localhost:3000`
 - Interactive CLI in the same terminal
 
 ## CLI commands
 
-| Command | Description |
-|---|---|
-| `/add [authorizationCode]` | Add and start a new bot |
+| Command                                            | Description                  |
+| -------------------------------------------------- | ---------------------------- |
+| `/add [authorizationCode]`                         | Add and start a new bot      |
 | `/add:device_auth <accountId> <deviceId> <secret>` | Add and start a bot manually |
-| `/remove <accountId>` | Stop and remove a bot |
-| `/reload <accountId>` | Reconnect one bot |
-| `/reload all` | Reconnect all bots |
-| `/list` | List bots and current states |
-| `/stats` | Show bot statistics |
-| `/help` | Show help |
-| `/exit` | Stop everything and exit |
+| `/remove <accountId>`                              | Stop and remove a bot        |
+| `/reload <accountId>`                              | Reconnect one bot            |
+| `/reload all`                                      | Reconnect all bots           |
+| `/list`                                            | List bots and current states |
+| `/stats`                                           | Show bot statistics          |
+| `/help`                                            | Show help                    |
+| `/exit`                                            | Stop everything and exit     |
 
 You can use just the first 8 characters of an `accountId` in CLI commands.
 
 ## Configuration
 
 `config.json` is organized into clear sections:
+
 - `bot.status`
 - `bot.party`
 - `bot.features`

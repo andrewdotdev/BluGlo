@@ -1,17 +1,30 @@
 {
   "name": "blugo-stw",
   "version": "1.0.0",
-  "description": "Bot taxi para Fortnite STW con dashboard web en tiempo real",
+  "description": "A Fortnite STW taxibot manager with a real-time web dashboard and interactive CLI.",
   "type": "module",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
+    "dev": "bun --watch src/index.ts",
+    "start": "bun src/index.ts",
+    "lint": "bunx eslint .",
+    "lint:fix": "bunx eslint . --fix",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --noEmit"
   },
   "dependencies": {
     "fnbr": "^4.1.2"
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/bun": "^1.3.11",
+    "@types/node": "^24.5.2",
+    "eslint": "^10.1.0",
+    "tsx": "^4.19.4",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.0"
   }
 }
