@@ -142,7 +142,7 @@ export class BluGo {
           this.client.friend?.pendingList?.filter(
             (f) => f.direction === "INCOMING",
           ) ?? [];
-        pending.forEach((f) => f.decline?.().catch(() => {}));
+        pending.forEach((f) => f.decline?.().catch(() => { }));
         if (pending.length > 0) {
           log(
             this.accountId,
@@ -154,7 +154,7 @@ export class BluGo {
 
       if (this.reJoinTo) {
         const friend = this.client.friend?.resolve(this.reJoinTo);
-        friend?.sendJoinRequest?.().catch(() => {});
+        friend?.sendJoinRequest?.().catch(() => { });
         log(
           this.accountId,
           "info",
@@ -162,6 +162,22 @@ export class BluGo {
         );
         this.reJoinTo = null;
       }
+
+      // this is like a heartbeat interval, AND IS CRITICAL!!!
+      this._keepaliveInterval = setInterval(async () => {
+        try {
+          this.client.setStatus(
+            this.presence === Presence.BUSY
+              ? (this.actions.busyStatus || BOT.busyStatus)
+              : (this.actions.idleStatus || BOT.idleStatus),
+            'online'
+          )
+        } catch (err) {
+          log(this.accountId, 'warn', `Keepalive failed, trying to reconnect...`)
+          clearInterval(this._keepaliveInterval)
+          this._onDisconnect()
+        }
+      }, 1000 * 60 * 4) // each 4 minutes
     });
 
     this.client.on("disconnected", () => this._onDisconnect());
@@ -190,14 +206,14 @@ export class BluGo {
 
     this.client.on("friend:request", (incoming) => {
       if (this.actions.denyFriendRequests) {
-        incoming.decline?.().catch(() => {});
+        incoming.decline?.().catch(() => { });
         log(
           this.accountId,
           "info",
           `Declined friend request from ${incoming.displayName}`,
         );
       } else {
-        incoming.accept?.().catch(() => {});
+        incoming.accept?.().catch(() => { });
         log(
           this.accountId,
           "info",
@@ -228,12 +244,12 @@ export class BluGo {
               "warn",
               "Party already in matchmaking when joined → leaving immediately",
             );
-            await this.client.leaveParty().catch(() => {});
+            await this.client.leaveParty().catch(() => { });
             this._returnToIdle(idleMsg);
             return;
           }
         }
-      } catch (_) {}
+      } catch (_) { }
 
       const collision = await this.manager?.handleCollision(member.party, this);
       if (collision) return;
@@ -267,21 +283,21 @@ export class BluGo {
       if (this.presence === Presence.BUSY) {
         log(this.accountId, "info", `Declining (busy)`);
         this.stats.invitesDeclined++;
-        invitation.decline?.().catch(() => {});
+        invitation.decline?.().catch(() => { });
         return;
       }
 
       if (invitation.party?.members?.size >= BOT.partyMaxSize) {
         log(this.accountId, "info", `Declining (party full)`);
         this.stats.invitesDeclined++;
-        invitation.decline?.().catch(() => {});
+        invitation.decline?.().catch(() => { });
         return;
       }
 
       if ((this.client.party?.members?.size ?? 1) > 1) {
         log(this.accountId, "info", `Declining (already in party)`);
         this.stats.invitesDeclined++;
-        invitation.decline?.().catch(() => {});
+        invitation.decline?.().catch(() => { });
         return;
       }
 
@@ -292,7 +308,7 @@ export class BluGo {
           `Declining (another taxi already in that party)`,
         );
         this.stats.invitesDeclined++;
-        invitation.decline?.().catch(() => {});
+        invitation.decline?.().catch(() => { });
         return;
       }
 
@@ -301,10 +317,10 @@ export class BluGo {
         if (isPlaying || sessionId) {
           log(this.accountId, "info", `Declining (sender already in match)`);
           this.stats.invitesDeclined++;
-          invitation.decline?.().catch(() => {});
+          invitation.decline?.().catch(() => { });
           return;
         }
-      } catch (_) {}
+      } catch (_) { }
 
       try {
         this._setPresence(Presence.BUSY, busyMsg);
@@ -321,21 +337,11 @@ export class BluGo {
           "ok",
           `In party with ${senderName} — patch applied`,
         );
-        await this.client.party?.me
-          ?.setOutfit("CID_039_Athena_Commando_F_Disco")
-          .catch((e) => {
-            console.log(e);
-          });
-        await this.client.party?.me.setEmote("EID_Hype").catch((e) => {
-          console.log(e);
-        });
-        await this.client.party?.sendMessage?.(
-          "Patch applied, please, select mission and start.",
-        );
+
         this._clearTimeout();
         this.currentTimeout = this.client.setTimeout(() => {
           log(this.accountId, "warn", "Party timeout → leaving");
-          this.client.leaveParty().catch(() => {});
+          this.client.leaveParty().catch(() => { });
           this.currentTimeout = null;
           this._returnToIdle(idleMsg);
         }, TIMINGS.partyAutoLeaveMs);
@@ -364,7 +370,7 @@ export class BluGo {
         );
 
         this.client.setTimeout(async () => {
-          await this.client.leaveParty().catch(() => {});
+          await this.client.leaveParty().catch(() => { });
           this._clearTimeout();
           this.stats.taxisCompleted++;
           this._returnToIdle(idleMsg);
@@ -388,9 +394,11 @@ export class BluGo {
   /** Stop the client completely without reconnecting. */
   stop() {
     this._clearTimeout();
+    clearInterval(this._keepaliveInterval)
+    this._keepaliveInterval = null
     this.client?.removeAllListeners();
     this.client?.xmpp?.disconnect?.();
-    this.client?.logout?.().catch(() => {});
+    this.client?.logout?.().catch(() => { });
     this._setPresence(Presence.OFFLINE, "Stopped");
     log(this.accountId, "info", "Bot stopped");
   }
@@ -437,9 +445,11 @@ export class BluGo {
 
   _cleanup() {
     this._clearTimeout();
+    clearInterval(this._keepaliveInterval)
+    this._keepaliveInterval = null
     this.client?.removeAllListeners?.();
     this.client?.xmpp?.disconnect?.();
-    this.client?.logout?.().catch(() => {});
+    this.client?.logout?.().catch(() => { });
     this.client = null;
   }
 
@@ -469,52 +479,54 @@ export class BluGo {
     // Lee el schema actual para saber si hay que actualizar MpLoadout
     const schema = this.client.party?.me?.meta?.schema ?? {};
     // eslint-disable-next-line no-unused-vars
-    const mpLoadout = (() => {
-      try {
-        return JSON.parse(schema["Default:MpLoadout_j"] ?? "{}");
-      } catch {
-        return {};
+    const mpLoadout1 = (() => {
+      const value = schema["Default:MpLoadout1_j"];
+      if (!value) return null;
+
+      if (typeof value === "string") {
+        try {
+          return JSON.parse(value);
+        } catch {
+          return null;
+        }
       }
+
+      if (typeof value === "object") {
+        return value;
+      }
+
+      return null;
     })();
 
     const cosmetics = {
-      "Default:AthenaBannerInfo_j": JSON.stringify({
-        AthenaBannerInfo: {
-          bannerIconId: "FounderTier4Banner3",
-          bannerColorId: "defaultcolor2",
-        },
-      }),
-      "Default:AthenaCosmeticLoadout_j": JSON.stringify({
-        AthenaCosmeticLoadout: {
-          characterPrimaryAssetId:
-            "AthenaCharacter:CID_039_Athena_Commando_F_Disco",
-        },
-      }),
-
-      "Default:AthenaCosmeticLoadoutVariants_j": JSON.stringify({
-        AthenaCosmeticLoadoutVariants: {
-          vL: {},
-        },
-      }),
-      "Default:FrontendEmote_j": JSON.stringify({
-        FrontendEmote: {
-          emoteItemDef:
-            "/BRCosmetics/Athena/Items/Cosmetics/Dances/EID_Hype.EID_Hype",
-          emoteEKey: "",
-          emoteSection: -1,
-        },
+      "Default:MpLoadout1_j": JSON.stringify({
+        MpLoadout1: {
+          s: {
+            ac: { i: "CID_039_Athena_Commando_F_Disco", v: ["0"] },
+            li: { i: "StandardBanner20", v: [] },
+            lc: { i: "DefaultColor2", v: [] }
+          }
+        }
       }),
     };
 
-    if (mpLoadout?.MpLoadout?.d !== undefined) {
-      cosmetics["Default:MpLoadout_j"] = JSON.stringify({
-        MpLoadout: {
-          d: JSON.stringify({
-            ac: { i: "CID_039_Athena_Commando_F_Disco", v: [] },
-          }),
-        },
-      });
+    // log(this.accountId, "info", `Has Default:MpLoadout1_j: ${schema["Default:MpLoadout1_j"] ? "yes" : "no"}`);
+    // log(this.accountId, "info", `Parsed MpLoadout1 keys: ${Object.keys(mpLoadout1?.MpLoadout1?.s ?? {}).join(", ")}`);
+
+    /**
+    if (mpLoadout1?.MpLoadout1?.s !== undefined) {
+      log(this.accountId, "info", "Pushing Cosmetics");
+      cosmetics["Default:MpLoadout1_j"] = JSON.stringify({
+        MpLoadout1: {
+          s: {
+            ac: { i: "CID_039_Athena_Commando_F_Disco", v: ["0"] },
+            li: { i: "StandardBanner20", v: [] },
+            lc: { i: "DefaultColor2", v: [] }
+          }
+        }
+      })
     }
+      */
 
     const patch = {
       "Default:FORTStats_j": JSON.stringify({
@@ -553,7 +565,7 @@ export class BluGo {
           bShouldRecordPartyChannel: false,
         },
       }),
-      // ...cosmetics,
+      ...cosmetics,
     };
 
     if (this.actions.high) {
@@ -561,6 +573,20 @@ export class BluGo {
       patch["Default:CampaignBackpackRating_d"] = "999.000000";
     }
 
+    // Send the Stats, Skin and Banner patch
     await this.client.party?.me?.sendPatch(patch);
+    setTimeout(() => {
+      this.client.party?.me?.sendPatch({
+        "Default:FrontendEmote_j": JSON.stringify({
+          FrontendEmote: {
+            pickable:
+              "/BRCosmetics/Athena/Items/Cosmetics/Dances/EID_Hype.EID_Hype",
+            emoteEKey: "",
+            emoteSection: -2,
+            multipurposeEmoteData: -1
+          },
+        }),
+      })
+    }, 1000 * 60 * 3)
   }
 }
