@@ -28,7 +28,7 @@
     },
     "timings": {
       "initTimeoutMs": 10000,
-      "postAcceptDelayMs": 300,
+      "postAcceptDelayMs": 1500,
       "partyAutoLeaveMs": 90000,
       "reloadDelayMs": 150,
       "matchstateLeaveDelayMs": 500,
