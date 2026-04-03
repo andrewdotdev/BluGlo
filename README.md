@@ -1,4 +1,4 @@
-# BluGo
+# BluGlo
 
 A Fortnite STW taxibot manager with a real-time web dashboard and interactive CLI.
 

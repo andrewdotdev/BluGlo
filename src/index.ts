@@ -5,7 +5,7 @@ import { startServer } from "./server.js";
 
 async function main(): Promise<void> {
   console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-  console.log("  🚕  BluGo STW");
+  console.log("  🚕  BluGlo STW");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
   const manager = new BotManager();

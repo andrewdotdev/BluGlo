@@ -44,7 +44,7 @@
   "dashboard": {
     "port": 3000,
     "host": "0.0.0.0",
-    "title": "BluGo Dashboard"
+    "title": "BluGlo Dashboard"
   },
   "dataFile": "./data/accounts.json"
 }

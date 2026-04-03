@@ -1,4 +1,4 @@
-import { BluGo } from "./bot.js";
+import { BluGlo } from "./bot.js";
 import { BOT, TIMINGS } from "./config.js";
 import { bus, log } from "./events.js";
 import { deleteAccount, readAccounts, upsertAccount } from "./store.js";
@@ -20,7 +20,7 @@ const DEVICE_AUTH_URL = (accountId: string): string =>
   `https://account-public-service-prod.ol.epicgames.com/account/api/public/account/${accountId}/deviceAuth`;
 
 export class BotManager {
-  public readonly bots = new Map<string, BluGo>();
+  public readonly bots = new Map<string, BluGlo>();
 
   public loadAll(): void {
     const accounts = readAccounts();
@@ -40,7 +40,7 @@ export class BotManager {
   public async add_authcode(
     authorizationCode: string,
     actions: AccountData["actions"] = {},
-  ): Promise<BluGo | null> {
+  ): Promise<BluGlo | null> {
     try {
       if (typeof authorizationCode !== "string" || !authorizationCode.trim()) {
         log(null, "warn", "Empty or invalid authorization code");
@@ -156,7 +156,7 @@ export class BotManager {
     secret: string,
     actions: AccountData["actions"] = {},
     displayName: string | null = null,
-  ): BluGo {
+  ): BluGlo {
     if (this.bots.has(accountId)) {
       log(
         null,
@@ -240,7 +240,7 @@ export class BotManager {
     return [...this.bots.values()].map((bot) => bot.snapshot);
   }
 
-  public async handleCollision(party: PartyLike, currentBot: BluGo): Promise<boolean> {
+  public async handleCollision(party: PartyLike, currentBot: BluGlo): Promise<boolean> {
     const taxiIds = [...this.bots.keys()];
     const colliding = party.members
       .filter((member) => taxiIds.includes(member.id) && member.id !== currentBot.accountId)
@@ -263,8 +263,8 @@ export class BotManager {
     );
   }
 
-  private _spawnBot(data: AccountData): BluGo {
-    const bot = new BluGo(data, this);
+  private _spawnBot(data: AccountData): BluGlo {
+    const bot = new BluGlo(data, this);
     this.bots.set(data.accountId, bot);
     bot.start();
     return bot;

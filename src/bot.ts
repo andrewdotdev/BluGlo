@@ -66,7 +66,7 @@ type FnbrClient = InstanceType<typeof Client> & {
   once: (event: string, listener: (...args: any[]) => void) => void;
 };
 
-export class BluGo {
+export class BluGlo {
   public readonly accountId: string;
   public readonly deviceId: string;
   public readonly secret: string;
