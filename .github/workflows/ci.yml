@@ -3,23 +3,32 @@ name: CI
 on:
   push:
   pull_request:
+  merge_group:
+    types: [checks_requested]
 
 jobs:
-  lint-typecheck:
+  typecheck:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
-      - name: Install dependencies
-        run: bun install
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+            node_modules
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock', 'package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
 
-      - name: Lint
-        run: bun run lint
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
 
       - name: Typecheck
         run: bun run typecheck

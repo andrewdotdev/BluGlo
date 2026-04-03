@@ -186,9 +186,7 @@ export class BluGo {
       if (this.actions.denyFriendRequests) {
         const pendingList = this.client?.friend?.pendingList as any;
         const pending =
-          pendingList?.filter?.(
-            (friend: any) => friend.direction === "INCOMING",
-          ) ?? [];
+          pendingList?.filter?.((friend: any) => friend.direction === "INCOMING") ?? [];
         const pendingArray = Array.isArray(pending)
           ? pending
           : Array.from((pending?.values?.() ?? pending) as Iterable<any>);
@@ -196,22 +194,14 @@ export class BluGo {
           void friend.decline?.().catch(() => undefined);
         }
         if (pendingArray.length > 0) {
-          log(
-            this.accountId,
-            "info",
-            `Declined ${pendingArray.length} pending friend request(s)`,
-          );
+          log(this.accountId, "info", `Declined ${pendingArray.length} pending friend request(s)`);
         }
       }
 
       if (this.reJoinTo) {
         const friend = this.client?.friend?.resolve?.(this.reJoinTo);
         void friend?.sendJoinRequest?.().catch(() => undefined);
-        log(
-          this.accountId,
-          "info",
-          `Retrying join to ${this.reJoinTo.slice(0, 8)}`,
-        );
+        log(this.accountId, "info", `Retrying join to ${this.reJoinTo.slice(0, 8)}`);
         this.reJoinTo = null;
       }
 
@@ -225,11 +215,7 @@ export class BluGo {
               "online",
             );
           } catch {
-            log(
-              this.accountId,
-              "warn",
-              "Keepalive failed, trying to reconnect...",
-            );
+            log(this.accountId, "warn", "Keepalive failed, trying to reconnect...");
             if (this.keepaliveInterval) {
               clearInterval(this.keepaliveInterval);
             }
@@ -241,9 +227,7 @@ export class BluGo {
     });
 
     this.client.on("disconnected", () => this._onDisconnect());
-    this.client.on("xmpp:message:error", (error: unknown) =>
-      this._onXmppError(error),
-    );
+    this.client.on("xmpp:message:error", (error: unknown) => this._onXmppError(error));
 
     this.client.on("party:member:disconnected", (member: PartyMemberLike) => {
       if (member.id === this.accountId) this._onDisconnect();
@@ -257,8 +241,7 @@ export class BluGo {
 
     this.client.on("party:member:left", (member: PartyMemberLike) => {
       const alone =
-        member.party.members.size === 1 &&
-        member.party.members.first?.()?.id === this.accountId;
+        member.party.members.size === 1 && member.party.members.first?.()?.id === this.accountId;
       if (member.id === this.accountId || alone) {
         this._returnToIdle(idleMsg);
       }
@@ -274,49 +257,32 @@ export class BluGo {
         if (!incoming) return;
         if (this.actions.denyFriendRequests) {
           void incoming.decline?.().catch(() => undefined);
-          log(
-            this.accountId,
-            "info",
-            `Declined friend request from ${incoming.displayName}`,
-          );
+          log(this.accountId, "info", `Declined friend request from ${incoming.displayName}`);
         } else {
           void incoming.accept?.().catch(() => undefined);
-          log(
-            this.accountId,
-            "info",
-            `Accepted friend request from ${incoming.displayName}`,
-          );
+          log(this.accountId, "info", `Accepted friend request from ${incoming.displayName}`);
         }
       },
     );
 
-    this.client.on(
-      "friend:added",
-      (friend: { id: string; displayName?: string }) => {
-        log(this.accountId, "info", `New friend: ${friend.displayName}`);
-        bus.emit("friend", {
-          accountId: this.accountId,
-          friendId: friend.id,
-          displayName: friend.displayName,
-        });
-      },
-    );
+    this.client.on("friend:added", (friend: { id: string; displayName?: string }) => {
+      log(this.accountId, "info", `New friend: ${friend.displayName}`);
+      bus.emit("friend", {
+        accountId: this.accountId,
+        friendId: friend.id,
+        displayName: friend.displayName,
+      });
+    });
 
     this.client.on("party:member:joined", async (member: PartyMemberLike) => {
       try {
         const schema = member.party.meta?.schema ?? {};
-        const campaignInfo = JSON.parse(
-          schema["Default:CampaignInfo_j"] ?? "{}",
-        ) as {
+        const campaignInfo = JSON.parse(schema["Default:CampaignInfo_j"] ?? "{}") as {
           CampaignInfo?: { matchmakingState?: string };
         };
         const state = campaignInfo.CampaignInfo?.matchmakingState;
 
-        if (
-          state &&
-          state !== MatchmakingState.NOT_MATCHMAKING &&
-          member.id === this.accountId
-        ) {
+        if (state && state !== MatchmakingState.NOT_MATCHMAKING && member.id === this.accountId) {
           log(
             this.accountId,
             "warn",
@@ -350,8 +316,7 @@ export class BluGo {
     });
 
     this.client.on("party:invite", async (invitation: PartyInvitationLike) => {
-      const senderName =
-        invitation.sender?.displayName ?? invitation.sender?.id?.slice(0, 8);
+      const senderName = invitation.sender?.displayName ?? invitation.sender?.id?.slice(0, 8);
       log(this.accountId, "info", `Party invite from ${senderName}`);
       bus.emit("invite", {
         accountId: this.accountId,
@@ -381,11 +346,7 @@ export class BluGo {
       }
 
       if (this.manager?.hasOtherTaxiIn(invitation.party, this.accountId)) {
-        log(
-          this.accountId,
-          "info",
-          "Declining (another taxi already in that party)",
-        );
+        log(this.accountId, "info", "Declining (another taxi already in that party)");
         this.stats.invitesDeclined++;
         void invitation.decline?.().catch(() => undefined);
         return;
@@ -409,17 +370,11 @@ export class BluGo {
         this.client?.setStatus(busyMsg, "online");
 
         if (TIMINGS.postAcceptDelayMs > 0) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, TIMINGS.postAcceptDelayMs),
-          );
+          await new Promise((resolve) => setTimeout(resolve, TIMINGS.postAcceptDelayMs));
         }
 
         await this._applyPatch();
-        log(
-          this.accountId,
-          "ok",
-          `In party with ${senderName} — patch applied`,
-        );
+        log(this.accountId, "ok", `In party with ${senderName} — patch applied`);
 
         this._clearTimeout();
         this.currentTimeout =
@@ -443,11 +398,7 @@ export class BluGo {
 
     this.client.on(
       "party:member:matchstate:updated",
-      (
-        member: PartyMemberLike,
-        value: MatchStateLike,
-        prev: MatchStateLike,
-      ) => {
+      (member: PartyMemberLike, value: MatchStateLike, prev: MatchStateLike) => {
         void member;
         const from = `${prev?.location}`;
         const to = `${value?.location}`;
@@ -464,11 +415,7 @@ export class BluGo {
             this._clearTimeout();
             this.stats.taxisCompleted++;
             this._returnToIdle(idleMsg);
-            log(
-              this.accountId,
-              "ok",
-              `Taxi completed #${this.stats.taxisCompleted}`,
-            );
+            log(this.accountId, "ok", `Taxi completed #${this.stats.taxisCompleted}`);
           }, TIMINGS.matchstateLeaveDelayMs);
         }
       },
@@ -513,11 +460,7 @@ export class BluGo {
       );
       this._scheduleReconnect();
     } else {
-      log(
-        this.accountId,
-        "error",
-        `Maximum retries reached (${RECONNECT.maxRetries})`,
-      );
+      log(this.accountId, "error", `Maximum retries reached (${RECONNECT.maxRetries})`);
       this._setPresence(Presence.OFFLINE, "Permanent error — use /reload <id>");
     }
   }
@@ -527,11 +470,9 @@ export class BluGo {
       typeof (error as { code?: string })?.code === "string"
         ? (error as { code: string }).code.toLowerCase()
         : "";
-    const shouldReconnect = [
-      "disconnect",
-      "invalid_refresh_token",
-      "party_not_found",
-    ].some((value) => code.includes(value));
+    const shouldReconnect = ["disconnect", "invalid_refresh_token", "party_not_found"].some(
+      (value) => code.includes(value),
+    );
 
     if (shouldReconnect) {
       this._onDisconnect();

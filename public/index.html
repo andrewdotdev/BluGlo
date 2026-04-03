@@ -564,9 +564,7 @@
           <div class="dot" id="conn-dot"></div>
           <span id="conn-label">Connecting...</span>
         </div>
-        <div class="header-pill" id="bots-count-pill">
-          <span id="bots-count">0</span>&nbsp;bots
-        </div>
+        <div class="header-pill" id="bots-count-pill"><span id="bots-count">0</span>&nbsp;bots</div>
         <div class="header-time" id="clock"></div>
       </header>
 
@@ -689,12 +687,8 @@
       }
 
       function setConnected(ok) {
-        document.getElementById("conn-dot").style.background = ok
-          ? "var(--green)"
-          : "var(--red)";
-        document.getElementById("conn-label").textContent = ok
-          ? "Connected"
-          : "Reconnecting...";
+        document.getElementById("conn-dot").style.background = ok ? "var(--green)" : "var(--red)";
+        document.getElementById("conn-label").textContent = ok ? "Connected" : "Reconnecting...";
       }
 
       connect();
@@ -761,9 +755,7 @@
         selected = accountId;
 
         // Update visual selection
-        document
-          .querySelectorAll(".bot-card")
-          .forEach((c) => c.classList.remove("selected"));
+        document.querySelectorAll(".bot-card").forEach((c) => c.classList.remove("selected"));
         document.getElementById(`card-${accountId}`)?.classList.add("selected");
 
         renderDetail(accountId);
@@ -867,9 +859,7 @@
         const ts = new Date(entry.ts).toLocaleTimeString("en-GB", {
           hour12: false,
         });
-        const shortId = entry.accountId
-          ? entry.accountId.slice(0, 8)
-          : "system ";
+        const shortId = entry.accountId ? entry.accountId.slice(0, 8) : "system ";
 
         el.innerHTML = `
     <span class="log-ts">${ts}</span>
@@ -877,8 +867,7 @@
     <span class="log-msg">${esc(entry.message)}</span>
   `;
 
-        const atBottom =
-          stream.scrollHeight - stream.scrollTop <= stream.clientHeight + 40;
+        const atBottom = stream.scrollHeight - stream.scrollTop <= stream.clientHeight + 40;
         stream.appendChild(el);
 
         while (stream.children.length > MAX_LOGS) {

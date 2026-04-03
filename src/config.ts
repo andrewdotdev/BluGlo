@@ -1,18 +1,18 @@
-import { readFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-import type { ConfigShape } from './types.js';
+import type { ConfigShape } from "./types.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const configPath = resolve(__dirname, '../config.json');
+const configPath = resolve(__dirname, "../config.json");
 
 let raw: string;
 try {
-  raw = readFileSync(configPath, 'utf8');
+  raw = readFileSync(configPath, "utf8");
 } catch (error) {
   const message = error instanceof Error ? error.message : String(error);
-  console.error('[config] config.json was not found:', message);
+  console.error("[config] config.json was not found:", message);
   process.exit(1);
 }
 
@@ -27,12 +27,12 @@ const timings = bot.timings ?? {};
 const reconnect = bot.reconnect ?? {};
 
 export const BOT = {
-  idleStatus: status.idle ?? 'Available 🚕',
-  busyStatus: status.busy ?? 'Busy 🔒',
+  idleStatus: status.idle ?? "Available 🚕",
+  busyStatus: status.busy ?? "Busy 🔒",
   partyMaxSize: party.maxSize ?? 4,
   fortStatsHigh: features.fortStatsHigh ?? true,
   denyFriendRequests: features.denyFriendRequests ?? false,
-  authClient: auth.fnbrClient ?? 'fortniteAndroidGameClient',
+  authClient: auth.fnbrClient ?? "fortniteAndroidGameClient",
   auth: {
     authorizationCodeClient: auth.authorizationCodeClient ?? {},
     deviceAuthClient: auth.deviceAuthClient ?? {},
@@ -41,8 +41,8 @@ export const BOT = {
 
 export const DASH = {
   port: config.dashboard?.port ?? 3000,
-  host: config.dashboard?.host ?? '0.0.0.0',
-  title: config.dashboard?.title ?? 'BluGo Dashboard',
+  host: config.dashboard?.host ?? "0.0.0.0",
+  title: config.dashboard?.title ?? "BluGo Dashboard",
 } as const;
 
 export const TIMINGS = {
@@ -61,4 +61,4 @@ export const RECONNECT = {
   xmppMaxConnectionRetries: reconnect.xmppMaxConnectionRetries ?? 3,
 } as const;
 
-export const DATA_FILE = config.dataFile ?? './data/accounts.json';
+export const DATA_FILE = config.dataFile ?? "./data/accounts.json";
