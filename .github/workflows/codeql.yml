@@ -1,0 +1,15 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    uses: github/codeql-action/analyze@v3
