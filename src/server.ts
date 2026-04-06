@@ -20,6 +20,10 @@ const MIME: Record<string, string> = {
 
 const sseClients = new Set<ServerResponse>();
 
+/**
+ * Broadcasts dashboard-safe runtime updates to every connected SSE client.
+ * Logs are intentionally excluded so the browser only receives state changes.
+ */
 export function broadcast(event: string, data: unknown): void {
   const chunk = `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
   for (const response of sseClients) {
@@ -32,7 +36,7 @@ export function broadcast(event: string, data: unknown): void {
 }
 
 export function startServer(manager: BotManager) {
-  const events = ["status", "profile", "log", "invite", "joined", "left", "friend", "removed"];
+  const events = ["status", "profile", "invite", "joined", "left", "friend", "removed"];
   for (const eventName of events) {
     bus.on(eventName, (data) => broadcast(eventName, data));
   }
