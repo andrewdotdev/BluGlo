@@ -2,614 +2,341 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>BluGlo — Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap"
     />
     <style>
-      /* Reset and variables */
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; }
       :root {
-        --bg: #0a0a0b;
-        --bg2: #111113;
-        --bg3: #18181c;
-        --border: #232328;
-        --border2: #2e2e36;
-        --text: #e2e2e8;
-        --muted: #5a5a6e;
-        --accent: #f5c518;
-        --green: #39d353;
-        --red: #f85149;
-        --orange: #e3993e;
-        --blue: #58a6ff;
-        --purple: #bc8cff;
+        --bg: #07080b;
+        --panel: rgba(15, 17, 23, 0.88);
+        --panel-2: rgba(18, 21, 28, 0.92);
+        --card: rgba(16, 19, 26, 0.94);
+        --card-hover: rgba(20, 24, 32, 0.98);
+        --border: rgba(255,255,255,0.08);
+        --border-strong: rgba(255,255,255,0.14);
+        --text: #f4f7fb;
+        --text-soft: #ced5df;
+        --muted: #8a95a6;
+        --muted-2: #677184;
+        --accent: #7dd3fc;
+        --accent-soft: rgba(125, 211, 252, 0.12);
+        --green: #4ade80;
+        --orange: #fbbf24;
+        --red: #fb7185;
+        --blue: #60a5fa;
         --mono: "IBM Plex Mono", monospace;
-        --sans: "IBM Plex Sans", sans-serif;
-        --radius: 4px;
-        --gutter: 20px;
+        --sans: "Inter", sans-serif;
+        --radius: 24px;
+        --radius-sm: 18px;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+        --header-h: 72px;
       }
 
-      html,
       body {
-        height: 100%;
-        background: var(--bg);
+        font-family: var(--sans);
+        background:
+          radial-gradient(circle at top left, rgba(96, 165, 250, 0.12), transparent 28%),
+          radial-gradient(circle at top right, rgba(125, 211, 252, 0.08), transparent 22%),
+          linear-gradient(180deg, #05060a 0%, #090b10 100%);
         color: var(--text);
-        font-family: var(--mono);
-        font-size: 13px;
-        line-height: 1.5;
         overflow: hidden;
       }
 
-      /* Main layout */
+      button, input { font: inherit; }
+
       #app {
         display: grid;
-        grid-template-rows: 48px 1fr;
-        grid-template-columns: 280px 1fr 300px;
+        grid-template-columns: 360px minmax(0, 1fr);
+        grid-template-rows: var(--header-h) 1fr;
         height: 100vh;
-        gap: 0;
+        height: 100dvh;
       }
 
-      /* Header */
       header {
         grid-column: 1 / -1;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         gap: 16px;
-        padding: 0 20px;
-        background: var(--bg2);
+        padding: 16px 20px;
         border-bottom: 1px solid var(--border);
-        position: relative;
+        backdrop-filter: blur(22px);
+        background: rgba(8, 10, 14, 0.72);
       }
 
-      .logo {
-        font-weight: 600;
-        font-size: 14px;
-        letter-spacing: 0.08em;
-        color: var(--accent);
+      .brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+      .brand-mark {
+        width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center;
+        background: linear-gradient(180deg, rgba(125,211,252,0.16), rgba(125,211,252,0.06));
+        border: 1px solid rgba(125,211,252,0.22); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
       }
+      .logo-main { font-family: var(--mono); font-size: 15px; letter-spacing: 0.16em; color: var(--accent); }
+      .logo-sub { color: var(--muted); font-size: 12px; margin-top: 2px; }
 
-      .logo span {
-        color: var(--muted);
-        font-weight: 300;
-      }
-
+      .header-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
       .header-pill {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        background: var(--bg3);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 3px 10px;
-        font-size: 11px;
-        color: var(--muted);
+        min-height: 40px; padding: 0 14px; border-radius: 999px; display: inline-flex; align-items: center; gap: 8px;
+        border: 1px solid var(--border); background: rgba(14, 17, 24, 0.84); color: var(--text-soft);
+        font-size: 12px; font-family: var(--mono); backdrop-filter: blur(12px);
       }
+      .header-pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+      .header-time { color: var(--muted); font-family: var(--mono); font-size: 12px; min-width: 68px; text-align: right; }
 
-      .header-pill .dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--green);
-        animation: pulse 2s ease-in-out infinite;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-
-        50% {
-          opacity: 0.3;
-        }
-      }
-
-      .header-time {
-        margin-left: auto;
-        font-size: 11px;
-        color: var(--muted);
-        letter-spacing: 0.05em;
-      }
-
-      /* Left panel: bot list */
+      .panel { min-width: 0; min-height: 0; }
       #bots-panel {
-        background: var(--bg2);
         border-right: 1px solid var(--border);
-        overflow-y: auto;
-        padding: 12px 0;
+        background: rgba(8, 10, 14, 0.44);
+        backdrop-filter: blur(24px);
+        overflow: auto;
+        padding: 18px;
+      }
+      #detail-panel {
+        overflow: auto;
+        padding: 22px;
       }
 
-      .panel-label {
-        font-size: 10px;
-        letter-spacing: 0.15em;
-        color: var(--muted);
-        padding: 0 16px 8px;
-        text-transform: uppercase;
-        border-bottom: 1px solid var(--border);
-        margin-bottom: 8px;
+      .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+      .panel-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; color: var(--muted); text-transform: uppercase; }
+      .subtle-badge {
+        padding: 6px 10px; border-radius: 999px; background: rgba(14, 17, 24, 0.84); border: 1px solid var(--border);
+        color: var(--muted); font-size: 11px; font-family: var(--mono);
+      }
+
+      .search-shell { margin-bottom: 14px; }
+      .search-input {
+        width: 100%; height: 44px; border-radius: 16px; border: 1px solid var(--border);
+        background: rgba(14, 17, 24, 0.88); color: var(--text); padding: 0 14px; outline: none;
+        transition: border-color .16s ease, background .16s ease;
+      }
+      .search-input::placeholder { color: var(--muted-2); }
+      .search-input:focus { border-color: rgba(125, 211, 252, 0.3); background: rgba(16, 20, 28, 0.96); }
+
+      #bots-list { display: flex; flex-direction: column; gap: 12px; }
+      .empty-bots, .detail-empty {
+        border: 1px dashed var(--border); border-radius: var(--radius); background: rgba(12, 14, 19, 0.8);
+        color: var(--muted); box-shadow: var(--shadow);
+      }
+      .empty-bots { padding: 24px 18px; line-height: 1.8; font-size: 14px; }
+      .empty-bots code {
+        color: var(--accent); background: rgba(125, 211, 252, 0.08); border: 1px solid rgba(125, 211, 252, 0.12);
+        padding: 2px 7px; border-radius: 9px; font-family: var(--mono);
       }
 
       .bot-card {
-        padding: 10px 16px;
-        cursor: pointer;
-        border-left: 3px solid transparent;
-        transition:
-          background 0.1s,
-          border-color 0.1s;
-        position: relative;
+        padding: 15px; border-radius: 20px; border: 1px solid var(--border); background: var(--card); cursor: pointer;
+        transition: transform .16s ease, border-color .16s ease, background .16s ease, box-shadow .16s ease;
+        box-shadow: 0 8px 30px rgba(0,0,0,.16); min-width: 0;
       }
-
       .bot-card:hover {
-        background: var(--bg3);
+        transform: translateY(-1px); border-color: rgba(125, 211, 252, 0.16); background: var(--card-hover);
       }
-
       .bot-card.selected {
-        background: var(--bg3);
-        border-left-color: var(--accent);
+        border-color: rgba(125, 211, 252, 0.28); background: linear-gradient(180deg, rgba(18,23,31,.98), rgba(15,18,25,.98));
+        box-shadow: 0 16px 50px rgba(0,0,0,.28), inset 0 0 0 1px rgba(125,211,252,.08);
       }
-
-      .bot-card-title {
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--text);
-        letter-spacing: 0.02em;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+      .bot-card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .bot-card-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+      .bot-card-title-text { font-size: 15px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+      .dot-active { background: var(--green); box-shadow: 0 0 0 6px rgba(74, 222, 128, 0.08); }
+      .dot-busy { background: var(--orange); box-shadow: 0 0 0 6px rgba(251, 191, 36, 0.08); }
+      .dot-offline { background: var(--red); box-shadow: 0 0 0 6px rgba(251, 113, 133, 0.08); }
+      .dot-loading { background: var(--blue); box-shadow: 0 0 0 6px rgba(96, 165, 250, 0.08); }
+      .presence-mini {
+        color: var(--muted); font-size: 11px; font-family: var(--mono); text-transform: uppercase; letter-spacing: .08em;
       }
-
       .bot-card-subid {
-        margin-top: 3px;
-        font-size: 10px;
-        color: var(--muted);
-        letter-spacing: 0.04em;
+        margin-top: 9px; color: var(--muted-2); font-size: 11px; font-family: var(--mono);
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
       }
-
-      .status-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        flex-shrink: 0;
-      }
-
-      .dot-active {
-        background: var(--green);
-        box-shadow: 0 0 6px var(--green);
-      }
-
-      .dot-busy {
-        background: var(--orange);
-        box-shadow: 0 0 6px var(--orange);
-        animation: pulse 1.5s infinite;
-      }
-
-      .dot-offline {
-        background: var(--red);
-      }
-
-      .dot-loading {
-        background: var(--blue);
-        animation: pulse 0.8s infinite;
-      }
-
-      .bot-card-status {
-        font-size: 11px;
-        color: var(--muted);
-        margin-top: 3px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .bot-card-stats {
-        display: flex;
-        gap: 10px;
-        margin-top: 6px;
-      }
-
+      .bot-card-status { margin-top: 9px; font-size: 13px; color: var(--text-soft); min-height: 18px; }
+      .bot-card-stats { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
       .bot-stat {
-        font-size: 10px;
-        color: var(--muted);
+        padding: 6px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(10, 13, 18, 0.84);
+        color: var(--muted); font-size: 11px; font-family: var(--mono);
       }
-
-      .bot-stat strong {
-        color: var(--accent);
-        font-weight: 500;
-      }
-
-      .empty-bots {
-        padding: 24px 16px;
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.8;
-      }
-
-      .empty-bots code {
-        color: var(--accent);
-        background: var(--bg3);
-        padding: 1px 4px;
-        border-radius: 3px;
-      }
-
-      /* Center panel: selected bot details */
-      #detail-panel {
-        background: var(--bg);
-        overflow-y: auto;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-      }
+      .bot-stat strong { color: var(--accent); font-weight: 600; }
 
       .detail-empty {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color: var(--muted);
-        gap: 12px;
+        min-height: calc(100% - 12px); display: grid; place-items: center; text-align: center; padding: 28px;
+      }
+      .detail-empty-box { max-width: 420px; }
+      .taxi-icon { font-size: 54px; opacity: .56; margin-bottom: 8px; }
+
+      .detail-wrap { display: flex; flex-direction: column; gap: 18px; }
+      .mobile-back {
+        display: none; width: fit-content; height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--border);
+        background: rgba(14,17,24,.84); color: var(--text-soft); margin-bottom: 14px;
       }
 
-      .detail-empty .taxi-icon {
-        font-size: 48px;
-        opacity: 0.3;
+      .hero {
+        position: relative; overflow: hidden; border-radius: 30px; border: 1px solid var(--border);
+        background: linear-gradient(180deg, rgba(16,19,26,.96), rgba(10,12,17,.92));
+        padding: 26px; box-shadow: var(--shadow);
       }
-
-      .section-title {
-        font-size: 10px;
-        letter-spacing: 0.15em;
-        color: var(--muted);
-        text-transform: uppercase;
-        margin-bottom: 10px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+      .hero::after {
+        content: ""; position: absolute; inset: auto -40px -60px auto; width: 220px; height: 220px;
+        background: radial-gradient(circle, rgba(125,211,252,.14), transparent 65%); pointer-events: none;
       }
-
-      .section-title::after {
-        content: "";
-        flex: 1;
-        height: 1px;
-        background: var(--border);
-      }
-
-      .detail-header {
-        display: flex;
-        align-items: flex-start;
-        gap: 16px;
-      }
-
-      .detail-display-name {
-        font-size: 20px;
-        font-weight: 600;
-        color: var(--text);
-        letter-spacing: 0.02em;
-        word-break: break-word;
-      }
-
+      .detail-display-name { font-size: clamp(28px, 4vw, 40px); line-height: 1.02; font-weight: 800; word-break: break-word; }
       .detail-account-id {
-        margin-top: 4px;
-        font-size: 11px;
-        color: var(--muted);
-        letter-spacing: 0.04em;
-        word-break: break-all;
+        margin-top: 10px; color: var(--muted); font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere;
       }
-
-      .presence-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 11px;
-        padding: 3px 10px;
-        border-radius: 20px;
-        font-weight: 500;
-        margin-top: 6px;
+      .presence-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+      .presence-badge, .hero-chip {
+        display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 12px; border-radius: 999px;
+        font-size: 12px; font-family: var(--mono); border: 1px solid transparent;
       }
+      .badge-active { background: rgba(74,222,128,.1); color: var(--green); border-color: rgba(74,222,128,.18); }
+      .badge-busy { background: rgba(251,191,36,.1); color: var(--orange); border-color: rgba(251,191,36,.18); }
+      .badge-offline { background: rgba(251,113,133,.1); color: var(--red); border-color: rgba(251,113,133,.18); }
+      .badge-loading { background: rgba(96,165,250,.1); color: var(--blue); border-color: rgba(96,165,250,.18); }
+      .hero-chip { background: rgba(255,255,255,.04); color: var(--text-soft); border-color: var(--border); }
 
-      .badge-active {
-        background: rgba(57, 211, 83, 0.12);
-        color: var(--green);
-        border: 1px solid rgba(57, 211, 83, 0.3);
+      .section {
+        border-radius: 28px; border: 1px solid var(--border); background: rgba(12,14,19,.82); padding: 20px;
+        box-shadow: 0 18px 60px rgba(0,0,0,.22); backdrop-filter: blur(20px);
       }
-
-      .badge-busy {
-        background: rgba(227, 153, 62, 0.12);
-        color: var(--orange);
-        border: 1px solid rgba(227, 153, 62, 0.3);
+      .section-title {
+        display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+        font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .16em; color: var(--muted);
       }
-
-      .badge-offline {
-        background: rgba(248, 81, 73, 0.12);
-        color: var(--red);
-        border: 1px solid rgba(248, 81, 73, 0.3);
-      }
-
-      .badge-loading {
-        background: rgba(88, 166, 255, 0.12);
-        color: var(--blue);
-        border: 1px solid rgba(88, 166, 255, 0.3);
-      }
-
-      /* Stats grid */
-      .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-        gap: 10px;
-      }
-
+      .section-title::after { content: ""; height: 1px; flex: 1; background: var(--border); }
+      .stats-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
       .stat-box {
-        background: var(--bg2);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 12px 14px;
+        border-radius: 22px; border: 1px solid var(--border); background: rgba(16,19,26,.88); padding: 18px; min-width: 0;
       }
-
-      .stat-box-label {
-        font-size: 10px;
-        letter-spacing: 0.1em;
-        color: var(--muted);
-        text-transform: uppercase;
-        margin-bottom: 6px;
-      }
-
+      .stat-box-label { color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; font-family: var(--mono); }
       .stat-box-value {
-        font-size: 22px;
-        font-weight: 600;
-        color: var(--accent);
-      }
-
-      .stat-box-unit {
-        font-size: 11px;
-        color: var(--muted);
-        margin-left: 3px;
-      }
-
-      /* Config table */
-      .config-table {
-        background: var(--bg2);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        overflow: hidden;
-        width: 100%;
-      }
-
-      .config-row {
-        display: flex;
-        padding: 8px 14px;
-        border-bottom: 1px solid var(--border);
-        font-size: 12px;
-      }
-
-      .config-row:last-child {
-        border-bottom: none;
-      }
-
-      .config-key {
-        color: var(--muted);
-        width: 180px;
-        flex-shrink: 0;
-      }
-
-      .config-val {
-        color: var(--text);
-        flex: 1;
-      }
-
-      .config-val.true {
-        color: var(--green);
-      }
-
-      .config-val.false {
-        color: var(--red);
-      }
-
-      /* Right panel: log */
-      #log-panel {
-        background: var(--bg2);
-        border-left: 1px solid var(--border);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-      }
-
-      #log-panel .panel-label {
-        border-bottom: 1px solid var(--border);
-        padding: 12px 14px 10px;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .log-clear {
-        background: none;
-        border: 1px solid var(--border2);
-        color: var(--muted);
-        font-family: var(--mono);
-        font-size: 10px;
-        cursor: pointer;
-        padding: 2px 8px;
-        border-radius: 3px;
-        transition:
-          color 0.15s,
-          border-color 0.15s;
-      }
-
-      .log-clear:hover {
-        color: var(--text);
-        border-color: var(--muted);
-      }
-
-      #log-stream {
-        flex: 1;
-        overflow-y: auto;
-        padding: 10px 0;
-        font-size: 11px;
-        line-height: 1.7;
-      }
-
-      .log-entry {
-        display: flex;
-        gap: 8px;
-        padding: 2px 14px;
-        animation: fadeIn 0.15s ease;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateX(4px);
-        }
-
-        to {
-          opacity: 1;
-        }
-      }
-
-      .log-ts {
-        color: var(--muted);
-        flex-shrink: 0;
-        font-size: 10px;
-      }
-
-      .log-id {
-        color: var(--purple);
-        flex-shrink: 0;
-        min-width: 70px;
-      }
-
-      .log-msg {
-        color: var(--text);
-        flex: 1;
+        margin-top: 12px; font-size: clamp(22px, 3vw, 32px); line-height: 1; font-weight: 800; color: var(--text);
         word-break: break-word;
       }
+      .stat-box-value.accent { color: var(--accent); }
+      .stat-box-hint { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+      .mini-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .mini-card {
+        border-radius: 20px; border: 1px solid var(--border); background: rgba(16,19,26,.88); padding: 16px;
+      }
+      .mini-label { color: var(--muted); font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .12em; }
+      .mini-value { margin-top: 10px; color: var(--text-soft); font-size: 14px; line-height: 1.55; word-break: break-word; }
+      .mini-value strong { color: var(--text); }
+      .mini-value.good { color: var(--green); }
+      .mini-value.bad { color: var(--red); }
 
-      .log-info .log-msg {
-        color: var(--text);
+      ::-webkit-scrollbar { width: 8px; height: 8px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 999px; }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.18); }
+
+      @media (max-width: 1060px) {
+        #app { grid-template-columns: 320px minmax(0, 1fr); }
       }
 
-      .log-ok .log-msg {
-        color: var(--green);
-      }
-
-      .log-warn .log-msg {
-        color: var(--orange);
-      }
-
-      .log-error .log-msg {
-        color: var(--red);
-      }
-
-      /* Scrollbars */
-      ::-webkit-scrollbar {
-        width: 4px;
-        height: 4px;
-      }
-
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background: var(--border2);
-        border-radius: 4px;
-      }
-
-      ::-webkit-scrollbar-thumb:hover {
-        background: var(--muted);
-      }
-
-      /* Minimal responsive rules */
-      @media (max-width: 900px) {
-        #app {
-          grid-template-columns: 220px 1fr;
-          grid-template-rows: 48px 1fr;
+      @media (max-width: 860px) {
+        #app { grid-template-columns: 1fr; }
+        #bots-panel { border-right: 0; }
+        #detail-panel {
+          position: fixed; inset: var(--header-h) 0 0 0; z-index: 30; background: rgba(7,8,11,.96);
+          backdrop-filter: blur(24px); transform: translateX(100%); transition: transform .22s ease;
+          padding: 18px 16px 28px;
         }
-
-        #log-panel {
-          display: none;
-        }
+        #detail-panel.mobile-open { transform: translateX(0); }
+        .mobile-back { display: inline-flex; align-items: center; justify-content: center; }
+        .stats-grid, .mini-grid { grid-template-columns: 1fr; }
       }
 
-      @media (max-width: 600px) {
-        #app {
-          grid-template-columns: 1fr;
-          grid-template-rows: 48px 200px 1fr;
-        }
-
-        #bots-panel {
-          border-right: none;
-          border-bottom: 1px solid var(--border);
-        }
+      @media (max-width: 560px) {
+        header { padding: 14px 14px; }
+        .logo-sub, .header-time { display: none; }
+        .header-group { gap: 8px; }
+        .header-pill { min-height: 36px; padding: 0 12px; }
+        #bots-panel, #detail-panel { padding: 14px; }
+        .hero { padding: 22px 18px; border-radius: 24px; }
+        .section { padding: 16px; border-radius: 22px; }
+        .bot-card { padding: 14px; }
       }
     </style>
   </head>
-
   <body>
     <div id="app">
       <header>
-        <div class="logo">BLU<span>GLO</span></div>
-        <div class="header-pill">
-          <div class="dot" id="conn-dot"></div>
-          <span id="conn-label">Connecting...</span>
+        <div class="brand">
+          <div class="brand-mark">🚕</div>
+          <div>
+            <div class="logo-main">BLUGLO</div>
+            <div class="logo-sub">Bot dashboard</div>
+          </div>
         </div>
-        <div class="header-pill" id="bots-count-pill"><span id="bots-count">0</span>&nbsp;bots</div>
-        <div class="header-time" id="clock"></div>
+
+        <div class="header-group">
+          <div class="header-pill">
+            <div class="dot" id="conn-dot"></div>
+            <span id="conn-label">Connecting...</span>
+          </div>
+          <div class="header-pill"><span id="bots-count">0</span>&nbsp;bots</div>
+          <div class="header-time" id="clock"></div>
+        </div>
       </header>
 
-      <aside id="bots-panel">
-        <div class="panel-label">Bots</div>
+      <aside id="bots-panel" class="panel">
+        <div class="panel-head">
+          <div class="panel-label">Bots</div>
+          <div class="subtle-badge">Live state</div>
+        </div>
+
+        <div class="search-shell">
+          <input id="bot-search" class="search-input" type="text" placeholder="Search bots..." />
+        </div>
+
         <div id="bots-list">
           <div class="empty-bots">
             No bots yet.<br />
-            Use <code>/add</code> in the console<br />
-            to add an account.
+            Use <code>/add</code> in the console to add an account.
           </div>
         </div>
       </aside>
 
-      <main id="detail-panel">
+      <main id="detail-panel" class="panel">
+        <button id="mobile-back" class="mobile-back" type="button">← All bots</button>
         <div class="detail-empty">
-          <div class="taxi-icon">🚕</div>
-          <div>Select a bot</div>
+          <div class="detail-empty-box">
+            <div class="taxi-icon">🚕</div>
+            <div style="font-size: 20px; color: var(--text-soft); font-weight: 700">Select a bot</div>
+            <div style="margin-top: 8px; line-height: 1.65">Choose one from the list to see its live info, power stats, taxi counters and uptime.</div>
+          </div>
         </div>
       </main>
-
-      <aside id="log-panel">
-        <div class="panel-label">
-          <span>Log</span>
-          <button class="log-clear" onclick="clearLog()">Clear</button>
-        </div>
-        <div id="log-stream"></div>
-      </aside>
     </div>
 
     <script>
-      /* ─── Status ─────────────────────────────────────────────────────────────── */
-      const bots = new Map(); // accountId → snapshot
+      const bots = new Map();
       let selected = null;
-      const MAX_LOGS = 300;
+      let botFilter = "";
 
-      /* ─── Clock ──────────────────────────────────────────────────────────────── */
       const clockEl = document.getElementById("clock");
+      const searchEl = document.getElementById("bot-search");
+      const detailPanel = document.getElementById("detail-panel");
+      const mobileBackButton = document.getElementById("mobile-back");
+
       setInterval(() => {
-        clockEl.textContent = new Date().toLocaleTimeString("en-GB", {
-          hour12: false,
-        });
+        clockEl.textContent = new Date().toLocaleTimeString("en-GB", { hour12: false });
       }, 1000);
 
-      /* ─── SSE ─────────────────────────────────────────────────────────────────── */
+      searchEl?.addEventListener("input", (e) => {
+        botFilter = e.target.value.trim().toLowerCase();
+        renderBotList();
+      });
+
+      mobileBackButton?.addEventListener("click", () => {
+        detailPanel.classList.remove("mobile-open");
+      });
+
       let es;
 
       function connect() {
@@ -620,13 +347,18 @@
           bots.clear();
           data.forEach((b) => bots.set(b.accountId, b));
           renderBotList();
-          if (selected) renderDetail(selected);
+          if (selected && bots.has(selected)) {
+            renderDetail(selected);
+          } else if (selected && !bots.has(selected)) {
+            selected = null;
+            showEmpty();
+          }
           setConnected(true);
         });
 
         es.addEventListener("status", (e) => {
           const { accountId, presence, status } = JSON.parse(e.data);
-          const bot = bots.get(accountId) ?? { accountId };
+          const bot = bots.get(accountId) ?? { accountId, stats: {} };
           bot.presence = presence;
           bot.status = status;
           bots.set(accountId, bot);
@@ -636,15 +368,11 @@
 
         es.addEventListener("profile", (e) => {
           const { accountId, displayName } = JSON.parse(e.data);
-          const bot = bots.get(accountId) ?? { accountId };
+          const bot = bots.get(accountId) ?? { accountId, stats: {} };
           bot.displayName = displayName;
           bots.set(accountId, bot);
           updateBotCard(accountId);
           if (selected === accountId) renderDetail(accountId);
-        });
-
-        es.addEventListener("log", (e) => {
-          appendLog(JSON.parse(e.data));
         });
 
         es.addEventListener("joined", (e) => {
@@ -652,6 +380,17 @@
           const bot = bots.get(accountId);
           if (bot) {
             bot.currentMembers = members;
+            bots.set(accountId, bot);
+            updateBotCard(accountId);
+          }
+          if (selected === accountId) renderDetail(accountId);
+        });
+
+        es.addEventListener("invite", (e) => {
+          const { accountId, from, fromId } = JSON.parse(e.data);
+          const bot = bots.get(accountId);
+          if (bot) {
+            bot.lastInvite = { from, fromId, at: Date.now() };
             bots.set(accountId, bot);
           }
           if (selected === accountId) renderDetail(accountId);
@@ -662,22 +401,11 @@
           bots.delete(accountId);
           if (selected === accountId) {
             selected = null;
+            detailPanel.classList.remove("mobile-open");
             showEmpty();
           }
           renderBotList();
         });
-
-        es.addEventListener("friend", (e) => {
-          const { accountId } = JSON.parse(e.data);
-          const bot = bots.get(accountId);
-          if (bot) {
-            bot.stats = bot.stats ?? {};
-            bots.set(accountId, bot);
-          }
-        });
-
-        // Refresh stats periodically
-        es.addEventListener("snapshot", () => {});
 
         es.onerror = () => {
           setConnected(false);
@@ -693,28 +421,63 @@
 
       connect();
 
-      // Periodic uptime refresh in details
       setInterval(() => {
-        if (selected) renderDetail(selected);
         document.getElementById("bots-count").textContent = bots.size;
-      }, 2000);
+        if (selected && bots.has(selected)) renderDetail(selected);
+        renderBotList(true);
+      }, 1000);
 
-      /* ─── Render: bot list ────────────────────────────────────────────────────── */
-      function renderBotList() {
+      function getFilteredBots() {
+        const entries = [...bots.entries()];
+
+        const filtered = botFilter
+          ? entries.filter(([id, bot]) => {
+              const displayName = (bot.displayName || "").toLowerCase();
+              const accountId = id.toLowerCase();
+              const status = (bot.status || "").toLowerCase();
+              return displayName.includes(botFilter) || accountId.includes(botFilter) || status.includes(botFilter);
+            })
+          : entries;
+
+        return filtered.sort((a, b) => {
+          const aScore = presenceRank(a[1]?.presence);
+          const bScore = presenceRank(b[1]?.presence);
+          if (aScore !== bScore) return aScore - bScore;
+
+          const aName = (a[1]?.displayName || a[0]).toLowerCase();
+          const bName = (b[1]?.displayName || b[0]).toLowerCase();
+          return aName.localeCompare(bName);
+        });
+      }
+
+      function presenceRank(p) {
+        return { active: 0, busy: 1, loading: 2, offline: 3 }[p] ?? 99;
+      }
+
+      function renderBotList(keepDom = false) {
         document.getElementById("bots-count").textContent = bots.size;
         const container = document.getElementById("bots-list");
+        const filteredBots = getFilteredBots();
 
-        if (bots.size === 0) {
-          container.innerHTML = `<div class="empty-bots">
-      No bots yet.<br/>Use <code>/add</code> in the console.
-    </div>`;
+        if (filteredBots.length === 0) {
+          container.innerHTML = `
+            <div class="empty-bots">
+              ${bots.size === 0
+                ? 'No bots yet.<br />Use <code>/add</code> in the console to add an account.'
+                : 'No bots match your search.'}
+            </div>
+          `;
+          return;
+        }
+
+        if (keepDom && container.children.length === filteredBots.length) {
+          for (const [id] of filteredBots) updateBotCard(id);
           return;
         }
 
         container.innerHTML = "";
-        for (const [id, bot] of bots) {
-          const card = makeBotCard(id, bot);
-          container.appendChild(card);
+        for (const [id, bot] of filteredBots) {
+          container.appendChild(makeBotCard(id, bot));
         }
       }
 
@@ -724,17 +487,28 @@
         el.id = `card-${accountId}`;
         el.onclick = () => selectBot(accountId);
 
-        const dotClass = presenceToDotClass(bot.presence);
         const displayName = bot.displayName || `${accountId.slice(0, 8)}...`;
+        const totalUptime = getLiveTotalUptime(bot);
+        const partyCount = Array.isArray(bot.currentMembers) ? bot.currentMembers.length : 0;
 
         el.innerHTML = `
-    <div class="bot-card-title">
-      <div class="status-dot ${dotClass}"></div>
-      ${esc(displayName)}
-    </div>
-    <div class="bot-card-subid">${esc(accountId)}</div>
-    <div class="bot-card-status">${esc(bot.status ?? "—")}</div>
-  `;
+          <div class="bot-card-top">
+            <div class="bot-card-title">
+              <div class="status-dot ${presenceToDotClass(bot.presence)}"></div>
+              <div class="bot-card-title-text">${esc(displayName)}</div>
+            </div>
+            <div class="presence-mini">${esc(readablePresence(bot.presence))}</div>
+          </div>
+
+          <div class="bot-card-subid">${esc(accountId)}</div>
+          <div class="bot-card-status">${esc(bot.status || "—")}</div>
+
+          <div class="bot-card-stats">
+            <div class="bot-stat">Taxis <strong>${bot.stats?.taxisCompleted ?? 0}</strong></div>
+            <div class="bot-stat">Uptime <strong>${esc(formatDuration(totalUptime))}</strong></div>
+            <div class="bot-stat">Party <strong>${partyCount}</strong></div>
+          </div>
+        `;
         return el;
       }
 
@@ -743,168 +517,167 @@
         if (!bot) return;
         const existing = document.getElementById(`card-${accountId}`);
         if (existing) {
-          const newCard = makeBotCard(accountId, bot);
-          existing.replaceWith(newCard);
-        } else {
-          renderBotList();
+          existing.replaceWith(makeBotCard(accountId, bot));
         }
       }
 
-      /* ─── Render: detail ─────────────────────────────────────────────────────── */
       function selectBot(accountId) {
         selected = accountId;
-
-        // Update visual selection
         document.querySelectorAll(".bot-card").forEach((c) => c.classList.remove("selected"));
         document.getElementById(`card-${accountId}`)?.classList.add("selected");
-
         renderDetail(accountId);
+        if (window.innerWidth <= 860) {
+          detailPanel.classList.add("mobile-open");
+          detailPanel.scrollTop = 0;
+        }
       }
 
       function renderDetail(accountId) {
         const bot = bots.get(accountId);
         if (!bot) return;
 
-        const panel = document.getElementById("detail-panel");
-        const presenceLabel = {
-          active: "Active",
-          busy: "Busy",
-          offline: "Offline",
-          loading: "Loading",
-        };
-        const badgeClass = {
-          active: "badge-active",
-          busy: "badge-busy",
-          offline: "badge-offline",
-          loading: "badge-loading",
-        };
-
-        const uptime = bot.stats?.connectedAt
-          ? Math.floor((Date.now() - bot.stats.connectedAt) / 1000)
-          : 0;
-        const uptimeStr = uptime > 0 ? formatDuration(uptime) : "—";
-
-        const actions = bot.actions ?? {};
         const displayName = bot.displayName || "Unknown account";
+        const totalUptime = getLiveTotalUptime(bot);
+        const currentSessionUptime = getCurrentSessionUptime(bot);
+        const powerValue = bot.actions?.high ? "92765" : "0";
+        const partyMembers = Array.isArray(bot.currentMembers) ? bot.currentMembers : [];
+        const lastInvite = bot.lastInvite?.from ? bot.lastInvite.from : "—";
 
-        panel.innerHTML = `
-    <div class="section-title">Account</div>
-    <div class="detail-header">
-      <div>
-        <div class="detail-display-name">${esc(displayName)}</div>
-        <div class="detail-account-id">${esc(accountId)}</div>
-        <div class="presence-badge ${badgeClass[bot.presence] ?? "badge-offline"}">
-          ${presenceLabel[bot.presence] ?? bot.presence} — ${esc(bot.status ?? "")}
-        </div>
-      </div>
-    </div>
+        detailPanel.innerHTML = `
+          <button id="mobile-back" class="mobile-back" type="button">← All bots</button>
 
-    <div class="section-title">Statistics</div>
-    <div class="stats-grid">
-      <div class="stat-box">
-        <div class="stat-box-label">Taxies</div>
-        <div class="stat-box-value">${bot.stats?.taxisCompleted ?? 0}</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-box-label">Declined</div>
-        <div class="stat-box-value">${bot.stats?.invitesDeclined ?? 0}</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-box-label">Uptime</div>
-        <div class="stat-box-value" style="font-size:16px">${uptimeStr}</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-box-label">Retries</div>
-        <div class="stat-box-value">${bot.retryCount ?? 0}</div>
-      </div>
-    </div>
+          <div class="detail-wrap">
+            <section class="hero">
+              <div class="detail-display-name">${esc(displayName)}</div>
+              <div class="detail-account-id">${esc(accountId)}</div>
 
-    <div class="section-title">Active configuration</div>
-    <div class="config-table">
-      <div class="config-row">
-        <span class="config-key">Idle status</span>
-        <span class="config-val">${esc(actions.idleStatus ?? "—")}</span>
-      </div>
-      <div class="config-row">
-        <span class="config-key">Busy status</span>
-        <span class="config-val">${esc(actions.busyStatus ?? "—")}</span>
-      </div>
-      <div class="config-row">
-        <span class="config-key">High FORT stats</span>
-        <span class="config-val ${actions.high}">${actions.high ? "Yes (92765)" : "No (0)"}</span>
-      </div>
-      <div class="config-row">
-        <span class="config-key">Decline friend requests</span>
-        <span class="config-val ${actions.denyFriendRequests}">${actions.denyFriendRequests ? "Yes" : "No"}</span>
-      </div>
-    </div>
-  `;
+              <div class="presence-row">
+                <div class="presence-badge ${presenceToBadgeClass(bot.presence)}">
+                  ${esc(readablePresence(bot.presence))} — ${esc(bot.status || "No status")}
+                </div>
+                <div class="hero-chip">Retries: ${bot.retryCount ?? 0}</div>
+                <div class="hero-chip">Party members: ${partyMembers.length}</div>
+              </div>
+            </section>
+
+            <section class="section">
+              <div class="section-title">Overview</div>
+              <div class="stats-grid">
+                <div class="stat-box">
+                  <div class="stat-box-label">Power</div>
+                  <div class="stat-box-value accent">${powerValue}</div>
+                  <div class="stat-box-hint">${bot.actions?.high ? "HighStats enabled" : "HighStats disabled"}</div>
+                </div>
+
+                <div class="stat-box">
+                  <div class="stat-box-label">Taxis completed</div>
+                  <div class="stat-box-value">${bot.stats?.taxisCompleted ?? 0}</div>
+                  <div class="stat-box-hint">Successful taxi runs detected from matchmaking.</div>
+                </div>
+
+                <div class="stat-box">
+                  <div class="stat-box-label">Total uptime</div>
+                  <div class="stat-box-value">${esc(formatDuration(totalUptime))}</div>
+                  <div class="stat-box-hint">Accumulated uptime + current session uptime.</div>
+                </div>
+
+                <div class="stat-box">
+                  <div class="stat-box-label">Current session</div>
+                  <div class="stat-box-value">${esc(formatDuration(currentSessionUptime))}</div>
+                  <div class="stat-box-hint">Time connected since the latest successful login.</div>
+                </div>
+              </div>
+            </section>
+
+            <section class="section">
+              <div class="section-title">Live details</div>
+              <div class="mini-grid">
+                <div class="mini-card">
+                  <div class="mini-label">Invites declined</div>
+                  <div class="mini-value"><strong>${bot.stats?.invitesDeclined ?? 0}</strong></div>
+                </div>
+
+                <div class="mini-card">
+                  <div class="mini-label">HighStats</div>
+                  <div class="mini-value ${bot.actions?.high ? "good" : "bad"}"><strong>${bot.actions?.high ? "Enabled" : "Disabled"}</strong></div>
+                </div>
+
+                <div class="mini-card">
+                  <div class="mini-label">Current party</div>
+                  <div class="mini-value">${partyMembers.length ? esc(partyMembers.map((m) => m.displayName || m.accountId?.slice(0, 8) || "Unknown").join(", ")) : "No external party members right now."}</div>
+                </div>
+
+                <div class="mini-card">
+                  <div class="mini-label">Last invite</div>
+                  <div class="mini-value">${esc(lastInvite)}</div>
+                </div>
+              </div>
+            </section>
+          </div>
+        `;
+
+        document.getElementById("mobile-back")?.addEventListener("click", () => {
+          detailPanel.classList.remove("mobile-open");
+        });
       }
 
       function showEmpty() {
-        document.getElementById("detail-panel").innerHTML = `
-    <div class="detail-empty">
-      <div class="taxi-icon">🚕</div>
-      <div>Select a bot</div>
-    </div>
-  `;
-      }
-
-      /* ─── Log ─────────────────────────────────────────────────────────────────── */
-      function appendLog(entry) {
-        const stream = document.getElementById("log-stream");
-        const el = document.createElement("div");
-        el.className = `log-entry log-${entry.level ?? "info"}`;
-
-        const ts = new Date(entry.ts).toLocaleTimeString("en-GB", {
-          hour12: false,
+        detailPanel.innerHTML = `
+          <button id="mobile-back" class="mobile-back" type="button">← All bots</button>
+          <div class="detail-empty">
+            <div class="detail-empty-box">
+              <div class="taxi-icon">🚕</div>
+              <div style="font-size: 20px; color: var(--text-soft); font-weight: 700">Select a bot</div>
+              <div style="margin-top: 8px; line-height: 1.65">Choose one from the list to see its live info, power stats, taxi counters and uptime.</div>
+            </div>
+          </div>
+        `;
+        document.getElementById("mobile-back")?.addEventListener("click", () => {
+          detailPanel.classList.remove("mobile-open");
         });
-        const shortId = entry.accountId ? entry.accountId.slice(0, 8) : "system ";
-
-        el.innerHTML = `
-    <span class="log-ts">${ts}</span>
-    <span class="log-id">${shortId}</span>
-    <span class="log-msg">${esc(entry.message)}</span>
-  `;
-
-        const atBottom = stream.scrollHeight - stream.scrollTop <= stream.clientHeight + 40;
-        stream.appendChild(el);
-
-        while (stream.children.length > MAX_LOGS) {
-          stream.removeChild(stream.firstChild);
-        }
-
-        if (atBottom) stream.scrollTop = stream.scrollHeight;
       }
 
-      function clearLog() {
-        document.getElementById("log-stream").innerHTML = "";
+      function getCurrentSessionUptime(bot) {
+        const connectedAt = bot?.stats?.connectedAt;
+        if (!connectedAt) return 0;
+        return Math.max(0, Math.floor((Date.now() - connectedAt) / 1000));
       }
 
-      /* ─── Helpers ─────────────────────────────────────────────────────────────── */
-      function esc(s) {
-        return String(s)
+      function getLiveTotalUptime(bot) {
+        return (bot?.stats?.totalUptime ?? 0) + getCurrentSessionUptime(bot);
+      }
+
+      function readablePresence(value) {
+        return { active: "Active", busy: "Busy", loading: "Loading", offline: "Offline" }[value] ?? "Offline";
+      }
+
+      function presenceToDotClass(value) {
+        return { active: "dot-active", busy: "dot-busy", loading: "dot-loading", offline: "dot-offline" }[value] ?? "dot-offline";
+      }
+
+      function presenceToBadgeClass(value) {
+        return { active: "badge-active", busy: "badge-busy", loading: "badge-loading", offline: "badge-offline" }[value] ?? "badge-offline";
+      }
+
+      function formatDuration(seconds) {
+        const s = Math.max(0, Math.floor(seconds || 0));
+        const days = Math.floor(s / 86400);
+        const hours = Math.floor((s % 86400) / 3600);
+        const minutes = Math.floor((s % 3600) / 60);
+        const secs = s % 60;
+
+        if (days > 0) return `${days}d ${hours}h ${minutes}m`;
+        if (hours > 0) return `${hours}h ${minutes}m`;
+        if (minutes > 0) return `${minutes}m ${secs}s`;
+        return `${secs}s`;
+      }
+
+      function esc(value) {
+        return String(value)
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")
           .replace(/"/g, "&quot;");
-      }
-
-      function presenceToDotClass(p) {
-        return (
-          {
-            active: "dot-active",
-            busy: "dot-busy",
-            offline: "dot-offline",
-            loading: "dot-loading",
-          }[p] ?? "dot-offline"
-        );
-      }
-
-      function formatDuration(s) {
-        if (s < 60) return `${s}s`;
-        if (s < 3600) return `${Math.floor(s / 60)}m ${s % 60}s`;
-        return `${Math.floor(s / 3600)}h ${Math.floor((s % 3600) / 60)}m`;
       }
     </script>
   </body>

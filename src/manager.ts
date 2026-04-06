@@ -250,7 +250,7 @@ export class BotManager {
 
     log(currentBot.accountId, "warn", "Collision: another taxi is already in the party → leaving");
     await currentBot.client?.leaveParty?.().catch(() => undefined);
-    currentBot._returnToIdle(currentBot.actions.idleStatus || currentBot.client?.defaultStatus);
+    currentBot.returnToIdle(currentBot.actions.idleStatus || currentBot.client?.defaultStatus);
     return true;
   }
 
