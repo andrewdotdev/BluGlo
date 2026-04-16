@@ -5,7 +5,7 @@ import { applyPartyPatch } from "../patch.js";
 import type { BluGlo } from "../../bot.js";
 import { PARTY_PREFIX } from "../constants.js";
 import type { MatchStateLike, PartyInvitationLike, PartyMemberLike } from "../../types.js";
-import type { PartyMember, PartyMessage } from "fnbr";
+import type { Friend, PartyMember, PartyMessage } from "fnbr";
 import { sendPartyMessageRaw, sendWhisperRaw } from "../chat.js";
 
 /**
@@ -120,10 +120,11 @@ Commands in party chat:
       void invitation.decline?.().catch(() => undefined);
       return;
     }
-
+    
+    // THIS IS A WORKAROUND
     try {
-      const { isPlaying, sessionId } = invitation.sender?.presence ?? {};
-      if (isPlaying || sessionId) {
+      const status = bot.client?.friend.resolve(invitation.sender as Friend)?.presence?.status;
+      if (!status || status?.indexOf("[PH]") < 0 || status?.indexOf("(1") < 0) {
         log(bot.accountId, "info", "Declining (sender already in match)");
         bot.stats.invitesDeclined++;
         void invitation.decline?.().catch(() => undefined);
@@ -175,16 +176,16 @@ Commands in party chat:
       const to = `${value?.location}`;
 
       if (from === "PreLobby" && to === "ConnectingToLobby") {
-        log(bot.accountId, "ok", `Matchmaking detected → leaving in ${bot.timings.matchstateLeaveDelayMs}ms`);
+         log(bot.accountId, "ok", `Matchmaking detected → leaving in ${bot.timings.matchstateLeaveDelayMs}ms`);
 
-        bot.client?.setTimeout(async () => {
-          await bot.client?.leaveParty?.().catch(() => undefined);
-          bot.clearPartyTimeout();
-          bot.stats.taxisCompleted++;
-          bot.returnToIdle(idleMsg);
-          log(bot.accountId, "ok", `Taxi completed #${bot.stats.taxisCompleted}`);
-        }, bot.timings.matchstateLeaveDelayMs);
-      }
+         bot.client?.setTimeout(async () => {
+           await bot.client?.leaveParty?.().catch(() => undefined);
+           bot.clearPartyTimeout();
+           bot.stats.taxisCompleted++;
+           bot.returnToIdle(idleMsg);
+           log(bot.accountId, "ok", `Taxi completed #${bot.stats.taxisCompleted}`);
+         }, bot.timings.matchstateLeaveDelayMs);
+       }
     },
   );
 
