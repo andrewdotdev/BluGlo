@@ -149,6 +149,10 @@ Commands in party chat:
       log(bot.accountId, "ok", `In party with ${senderName} → patch applied`);
 
       bot.clearPartyTimeout();
+      //for bad connections
+      setTimeout(async () => {
+        await applyPartyPatch(bot);
+      }, 4000);
       bot.currentTimeout =
         bot.client?.setTimeout(() => {
           log(bot.accountId, "warn", "Party timeout → leaving");
