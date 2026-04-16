@@ -280,6 +280,12 @@ export class BluGlo {
         ? (error as { code: string }).code.toLowerCase()
         : "";
 
+    if (code.includes("errors.com.epicgames.social.party.party_change_forbidden")) {
+      log(this.accountId, "warn", "party_change_forbidden detected → reloading bot");
+      this.manager?.reload(this.accountId);
+      return;
+    }
+
     const shouldReconnect = ["disconnect", "invalid_refresh_token", "party_not_found"].some((value) =>
       code.includes(value),
     );
