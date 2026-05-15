@@ -1,7 +1,6 @@
 import { startCLI } from "./cli.js";
 import { log } from "./events.js";
 import { BotManager } from "./manager.js";
-import { startServer } from "./server.js";
 
 async function main(): Promise<void> {
   console.log("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
@@ -10,7 +9,6 @@ async function main(): Promise<void> {
 
   const manager = new BotManager();
 
-  startServer(manager);
   manager.loadAll();
   startCLI(manager);
 

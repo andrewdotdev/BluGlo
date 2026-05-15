@@ -61,11 +61,6 @@ export interface ConfigShape {
     timings?: Record<string, number>;
     reconnect?: Record<string, number>;
   };
-  dashboard?: {
-    port?: number;
-    host?: string;
-    title?: string;
-  };
   dataFile?: string;
 }
 

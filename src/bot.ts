@@ -190,7 +190,7 @@ export class BluGlo {
   }
 
   /**
-   * Updates the in-memory presence and broadcasts it to the dashboard.
+   * Updates the in-memory presence and emits runtime status events.
    */
   public setPresence(presence: PresenceValue, status: string): void {
     this.presence = presence;

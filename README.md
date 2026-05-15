@@ -1,22 +1,21 @@
 # BluGlo
 
-A Fortnite STW taxibot manager with a real-time web dashboard and interactive CLI.
+A Fortnite STW taxibot manager with an interactive CLI.
 
 ## Installation
 
 ```bash
-npm install
+bun install
 ```
 
 ## Run
 
 ```bash
-npm start
+bun start
 ```
 
 This starts:
 
-- Dashboard: `http://localhost:3000`
 - Interactive CLI in the same terminal
 
 ## CLI commands
@@ -45,7 +44,6 @@ You can use just the first 8 characters of an `accountId` in CLI commands.
 - `bot.auth`
 - `bot.timings`
 - `bot.reconnect`
-- `dashboard`
 - `dataFile`
 
 ### Auth flow used by `/add`

@@ -39,12 +39,6 @@ export const BOT = {
   },
 } as const;
 
-export const DASH = {
-  port: config.dashboard?.port ?? 3000,
-  host: config.dashboard?.host ?? "0.0.0.0",
-  title: config.dashboard?.title ?? "BluGlo Dashboard",
-} as const;
-
 export const TIMINGS = {
   initTimeoutMs: timings.initTimeoutMs ?? 10000,
   postAcceptDelayMs: timings.postAcceptDelayMs ?? 1000,

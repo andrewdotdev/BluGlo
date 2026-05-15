@@ -1,5 +1,5 @@
 /**
- * High-level runtime presence shown in the dashboard and CLI.
+ * High-level runtime presence shown in the CLI and runtime events.
  *
  * @see https://fnbr.js.org
  * @see https://github.com/fnbrjs/fnbr.js

@@ -687,7 +687,6 @@ function compactLog(text: string): string {
     .trim();
 
   value = value
-    .replace(/Dashboard at .*/i, "Dashboard ready")
     .replace(/Loading (\d+) account\(s\)\.\.\./i, "Loading $1 account(s)")
     .replace(/No saved accounts found\. Use \/add to add one\./i, "No saved accounts")
     .replace(/Exchanging authorization code with .*?/i, "Exchanging auth code")
